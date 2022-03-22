@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:14.1
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  gspconsumer:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+      args:
+        TESTING: 1
+    environment:
+      - DB_URL=postgresql://postgres:postgres@postgres:5432/postgres
+      - LOG_LEVEL=DEBUG
+      - API_KEY=$API_KEY
+      - SYSTEM_ID=$SYSTEM_ID
+      - DATA_SERVICE_URL=https://pvoutput.org/
+    command: >
+      bash -c "pytest --cov=./gspconsumer
+      && coverage report -m
+      && coverage xml
+      && cp .coverage ./tests/
+      && cp coverage.xml ./tests/"
+    depends_on:
+      - "postgres"
+    volumes:
+      - ./tests/:/app/tests
+      - ./gspconsumer/:/app/gspconsumer
