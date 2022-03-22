@@ -20,7 +20,7 @@ COPY requirements.txt app/requirements.txt
 RUN pip install -r app/requirements.txt
 
 # copy library files
-COPY pvconsumer/ app/gspconsumer/
+COPY gspconsumer/ app/gspconsumer/
 COPY tests/ app/tests/
 
 # change to app folder
