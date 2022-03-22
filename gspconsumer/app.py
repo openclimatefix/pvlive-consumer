@@ -8,15 +8,14 @@
 
 import logging
 import os
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 import click
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.models.gsp import LocationSQL, GSPYield, GSPYieldSQL
+from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
 from pvlive_api import PVLive
-
 from sqlalchemy.orm import Session
 
 import gspconsumer

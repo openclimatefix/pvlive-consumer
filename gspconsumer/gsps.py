@@ -8,7 +8,6 @@ from nowcasting_datamodel.read.read import get_all_locations, get_location
 from nowcasting_datamodel.read.read_gsp import get_latest_gsp_yield
 from sqlalchemy.orm import Session
 
-
 logger = logging.getLogger(__name__)
 
 
