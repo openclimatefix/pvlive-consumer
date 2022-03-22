@@ -16,8 +16,7 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     Get PV systems
 
     1. Load from database
-    2. load from local
-    3. add any pv systems not in database, by query pvoutput.org
+    3. add any gsp not in database
 
     :param session: database sessions
     :param n_gsps: number of gsps, 0 is national then 1 to 338 is the gsps
@@ -29,7 +28,6 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     locations_sql_db: List[LocationSQL] = get_all_locations(
         session=session, gsp_ids=list(range(0, n_gsps))
     )
-    # locations_db = [Location.from_orm(pv_system) for pv_system in locations_sql_db]
 
     logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}")
 
@@ -56,8 +54,6 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     )
 
     assert len(all_locations) == n_gsps, len(all_locations)
-
-    logger.debug(all_locations)
 
     return all_locations
 
@@ -115,7 +111,7 @@ def filter_gsps_which_have_new_data(
                 keep_gsps.append(gsp)
             else:
                 logger.debug(
-                    f"Not keeping gsp {gsp.pv_system_id} as "
+                    f"Not keeping gsp {gsp.gsp_id} as "
                     f"last yield datetime is {last_yield.datetime_utc},"
                     f"refresh interval is 30 minutes"
                 )
