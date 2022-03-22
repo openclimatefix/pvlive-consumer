@@ -1,0 +1,8 @@
+numpy
+pandas
+pyyaml
+urllib3
+requests
+nowcasting_datamodel==0.0.22
+#git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
+click
