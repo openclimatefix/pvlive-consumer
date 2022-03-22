@@ -3,7 +3,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from nowcasting_datamodel.models.gsp import Location, LocationSQL
+from nowcasting_datamodel.models.gsp import LocationSQL
 from nowcasting_datamodel.read.read import get_all_locations, get_location
 from nowcasting_datamodel.read.read_gsp import get_latest_gsp_yield
 from sqlalchemy.orm import Session
@@ -12,9 +12,7 @@ from sqlalchemy.orm import Session
 logger = logging.getLogger(__name__)
 
 
-def get_gsps(
-    session: Session, n_gsps: int = 339, regime: str = "in-day"
-) -> List[LocationSQL]:
+def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> List[LocationSQL]:
     """
     Get PV systems
 
@@ -29,21 +27,23 @@ def get_gsps(
     """
     # load all pv systems in database
 
-    locations_sql_db: List[LocationSQL] = get_all_locations(session=session, gsp_ids=list(range(0,n_gsps)))
+    locations_sql_db: List[LocationSQL] = get_all_locations(
+        session=session, gsp_ids=list(range(0, n_gsps))
+    )
     # locations_db = [Location.from_orm(pv_system) for pv_system in locations_sql_db]
 
-    logger.debug(f'Found {len(locations_sql_db)} locations in the database, should be {n_gsps}')
+    logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}")
 
     # get missing gsps
     if len(locations_sql_db) != n_gsps:
         gsp_ids_in_db = [location.gsp_id for location in locations_sql_db]
-        missing_gsp_ids = [gsp_id for gsp_id in range(0,n_gsps) if gsp_id not in gsp_ids_in_db]
+        missing_gsp_ids = [gsp_id for gsp_id in range(0, n_gsps) if gsp_id not in gsp_ids_in_db]
 
-        logger.debug(f'There were {len(missing_gsp_ids)} missing gsp in the database')
+        logger.debug(f"There were {len(missing_gsp_ids)} missing gsp in the database")
 
         new_locations = []
         for gsp_id in missing_gsp_ids:
-            location = get_location(session=session,gsp_id=gsp_id)
+            location = get_location(session=session, gsp_id=gsp_id)
             new_locations.append(location)
 
         all_locations = new_locations + locations_sql_db
@@ -84,10 +84,7 @@ def filter_gsps_which_have_new_data(
 
     """
 
-    logger.info(
-        f"Looking at which GSP might have new data. "
-        f"Number of GSPs are {len(gsps)}"
-    )
+    logger.info(f"Looking at which GSP might have new data. " f"Number of GSPs are {len(gsps)}")
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow()  # add timezone
@@ -104,14 +101,11 @@ def filter_gsps_which_have_new_data(
         if last_yield is None:
             # there is no pv yield data for this pv system, so lets keep it
             logger.debug(
-                f"There is no gsp yield data for GSP {gsp.gsp_id}, "
-                f"so will be getting data "
+                f"There is no gsp yield data for GSP {gsp.gsp_id}, " f"so will be getting data "
             )
             keep_gsps.append(gsp)
         else:
-            next_datetime_data_available = (
-                timedelta(minutes=30) + last_yield.datetime_utc
-            )
+            next_datetime_data_available = timedelta(minutes=30) + last_yield.datetime_utc
             if next_datetime_data_available < datetime_utc:
                 logger.debug(
                     f"For gsp {gsp.gsp_id} as "

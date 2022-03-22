@@ -9,7 +9,7 @@
 import logging
 import os
 from datetime import datetime, timezone, timedelta
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import click
 from nowcasting_datamodel.connection import DatabaseConnection
@@ -70,7 +70,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
         # 1. Read list of GSP systems (from local file)
         # and get their refresh times (refresh times can also be stored locally)
         logger.debug("Read list of GSP from database")
-        gsps = get_gsps(session=session, n_gsps=n_gsps,regime=regime)
+        gsps = get_gsps(session=session, n_gsps=n_gsps, regime=regime)
         assert len(gsps) == n_gsps
 
         # 2. Find most recent entered data (for each GSP) in OCF database,
@@ -90,7 +90,7 @@ def pull_data_and_save(
     gsps: List[LocationSQL],
     session: Session,
     datetime_utc: Optional[None] = None,
-    regime: str = "in-day"
+    regime: str = "in-day",
 ):
     """
     Pull the gsp yield data and save to database
@@ -106,12 +106,14 @@ def pull_data_and_save(
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
 
-    if regime == 'in-day':
+    if regime == "in-day":
         start = datetime_utc - timedelta(hours=1)
         end = datetime_utc + timedelta(minutes=30)
     else:
-        start = datetime_utc.replace(hour=0,minute=0,second=0, microsecond=0) - timedelta(hours=24)
-        end = datetime_utc.replace(hour=0,minute=0,second=0, microsecond=0)
+        start = datetime_utc.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(
+            hours=24
+        )
+        end = datetime_utc.replace(hour=0, minute=0, second=0, microsecond=0)
 
     logger.info(f"Pulling data for {len(gsps)} GSP for {datetime_utc}")
 
@@ -119,22 +121,12 @@ def pull_data_and_save(
     for gsp in gsps:
 
         gsp_yield_df = pvlive.between(
-            start=start,
-            end=end,
-            entity_type="gsp",
-            entity_id=120,
-            dataframe=True
+            start=start, end=end, entity_type="gsp", entity_id=120, dataframe=True
         )
 
-        logger.debug(
-            f"Processing {gsp.gsp_id} GSP, "
-            f"out of {len(gsps)}"
-        )
+        logger.debug(f"Processing {gsp.gsp_id} GSP, " f"out of {len(gsps)}")
 
-        logger.debug(
-            f"Got {len(gsp_yield_df)} gsp yield for "
-            f"gsp {gsp.gsp_id} before filtering"
-        )
+        logger.debug(f"Got {len(gsp_yield_df)} gsp yield for " f"gsp {gsp.gsp_id} before filtering")
 
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")
@@ -142,9 +134,7 @@ def pull_data_and_save(
 
             # filter by last
             if gsp.last_gsp_yield is not None:
-                last_gsp_datetime = gsp.last_gsp_yield.datetime_utc.replace(
-                    tzinfo=timezone.utc
-                )
+                last_gsp_datetime = gsp.last_gsp_yield.datetime_utc.replace(tzinfo=timezone.utc)
                 gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] > last_gsp_datetime]
 
                 if len(gsp_yield_df) == 0:
@@ -153,16 +143,13 @@ def pull_data_and_save(
                         f"Last data point was {last_gsp_datetime}"
                     )
             else:
-                logger.debug(
-                    f"This is the first lot gsp yield data for "
-                    f"GSP {(gsp.gsp_id)}"
-                )
+                logger.debug(f"This is the first lot gsp yield data for " f"GSP {(gsp.gsp_id)}")
 
             # need columns datetime_utc, solar_generation_kw
-            gsp_yield_df['solar_generation_kw'] = 1000 * gsp_yield_df['generation_mw']
-            gsp_yield_df['datetime_utc'] = gsp_yield_df['datetime_gmt']
+            gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
+            gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
             gsp_yield_df = gsp_yield_df[["solar_generation_kw", "datetime_utc"]]
-            gsp_yield_df['regime'] = regime
+            gsp_yield_df["regime"] = regime
 
             # change to list of pydantic objects
             gsp_yields = [GSPYield(**row) for row in gsp_yield_df.to_dict(orient="records")]
@@ -172,9 +159,7 @@ def pull_data_and_save(
             for gsp_yield_sql in gsp_yields_sql:
                 gsp_yield_sql.location = gsp
 
-            logger.debug(
-                f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}"
-            )
+            logger.debug(f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}")
 
             all_gsps_yields_sql = all_gsps_yields_sql + gsp_yields_sql
 
