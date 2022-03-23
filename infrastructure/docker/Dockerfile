@@ -5,11 +5,6 @@ ARG TESTING=0
 # make sure it doesnt fail if the docker file doesnt know the git commit
 ARG GIT_PYTHON_REFRESH=quiet
 
-#RUN apt-get -qq update \
-#    && apt-get -qq install -y --no-install-recommends \
-#        libpq-dev \
-#    && apt-get autoclean && apt-get autoremove \
-#    > /dev/null
 RUN apt-get update && apt-get install -y git
 
 # copy files

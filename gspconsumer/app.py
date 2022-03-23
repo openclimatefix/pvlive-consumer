@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 import click
+import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
@@ -119,7 +120,7 @@ def pull_data_and_save(
     all_gsps_yields_sql = []
     for gsp in gsps:
 
-        gsp_yield_df = pvlive.between(
+        gsp_yield_df: pd.DataFrame = pvlive.between(
             start=start, end=end, entity_type="gsp", entity_id=120, dataframe=True
         )
 
@@ -130,6 +131,10 @@ def pull_data_and_save(
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")
         else:
+
+            # filter by datetime
+            gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] >= start]
+            gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] < end]
 
             # filter by last
             if gsp.last_gsp_yield is not None:
