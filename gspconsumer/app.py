@@ -121,7 +121,7 @@ def pull_data_and_save(
     for gsp in gsps:
 
         gsp_yield_df: pd.DataFrame = pvlive.between(
-            start=start, end=end, entity_type="gsp", entity_id=120, dataframe=True
+            start=start, end=end, entity_type="gsp", entity_id=gsp.gsp_id, dataframe=True
         )
 
         logger.debug(f"Processing {gsp.gsp_id} GSP, " f"out of {len(gsps)}")
@@ -147,7 +147,7 @@ def pull_data_and_save(
                         f"Last data point was {last_gsp_datetime}"
                     )
             else:
-                logger.debug(f"This is the first lot gsp yield data for " f"GSP {(gsp.gsp_id)}")
+                logger.debug(f"This is the first lot gsp yield data for GSP {(gsp.gsp_id)}")
 
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
