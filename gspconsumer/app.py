@@ -124,9 +124,9 @@ def pull_data_and_save(
             start=start, end=end, entity_type="gsp", entity_id=gsp.gsp_id, dataframe=True
         )
 
-        logger.debug(f"Processing {gsp.gsp_id} GSP, " f"out of {len(gsps)}")
+        logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
 
-        logger.debug(f"Got {len(gsp_yield_df)} gsp yield for " f"gsp {gsp.gsp_id} before filtering")
+        logger.debug(f"Got {len(gsp_yield_df)} gsp yield for gsp id {gsp.gsp_id} before filtering")
 
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")

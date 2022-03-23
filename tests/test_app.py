@@ -8,7 +8,7 @@ from gspconsumer.app import app, pull_data_and_save
 def test_pull_data(db_session):
 
     gsps = [
-        Location(gsp_id=1, label="GSP_0").to_orm(),
+        Location(gsp_id=0, label="GSP_0").to_orm(),
     ]
     gsps[0].last_gsp_yield = None
 
