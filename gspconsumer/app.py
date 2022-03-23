@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
     type=click.STRING,
 )
 @click.option(
-    "--n_gsps",
+    "--n-gsps",
     default=10,
     envvar="N_GSPS",
     help="Number of gsps data to pull",
