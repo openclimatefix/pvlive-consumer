@@ -80,7 +80,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
             "and filter GSP depending on refresh rate"
         )
         gsps = filter_gsps_which_have_new_data(gsps=gsps)
-        assert len(gsps) == n_gsps, f'There are {len(gsps)} GSPS, there should be {n_gsps}'
+        assert len(gsps) <= n_gsps, f'There are {len(gsps)} GSPS, there should be <= {n_gsps}'
 
         # 3. Pull data
         pull_data_and_save(gsps=gsps, session=session, regime=regime)
