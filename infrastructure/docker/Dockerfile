@@ -10,6 +10,7 @@ ARG GIT_PYTHON_REFRESH=quiet
 #        libpq-dev \
 #    && apt-get autoclean && apt-get autoremove \
 #    > /dev/null
+RUN apt-get update && apt-get install -y git
 
 # copy files
 COPY setup.py app/setup.py
