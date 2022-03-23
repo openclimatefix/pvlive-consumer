@@ -79,12 +79,10 @@ def filter_gsps_which_have_new_data(
 
     """
 
-    logger.info(f"Looking at which GSP might have new data. " f"Number of GSPs are {len(gsps)}")
+    logger.info(f"Looking at which GSP might have new data. Number of GSPs are {len(gsps)}")
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow()  # add timezone
-
-    logger.debug(gsps)
 
     keep_gsps = []
     for i, gsp in enumerate(gsps):

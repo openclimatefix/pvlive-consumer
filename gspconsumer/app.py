@@ -71,7 +71,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
         # and get their refresh times (refresh times can also be stored locally)
         logger.debug("Read list of GSP from database")
         gsps = get_gsps(session=session, n_gsps=n_gsps, regime=regime)
-        assert len(gsps) == n_gsps
+        assert len(gsps) == n_gsps, f'There are {len(gsps)} GSPS, there should be {n_gsps}'
 
         # 2. Find most recent entered data (for each GSP) in OCF database,
         # and filter depending on refresh rate
@@ -80,7 +80,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
             "and filter GSP depending on refresh rate"
         )
         gsps = filter_gsps_which_have_new_data(gsps=gsps)
-        assert len(gsps) == n_gsps
+        assert len(gsps) == n_gsps, f'There are {len(gsps)} GSPS, there should be {n_gsps}'
 
         # 3. Pull data
         pull_data_and_save(gsps=gsps, session=session, regime=regime)
