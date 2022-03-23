@@ -60,7 +60,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
     :return:
     """
 
-    logger.info(f"Running GSP Consumer app ({gspconsumer.__version__})")
+    logger.info(f"Running GSP Consumer app ({gspconsumer.__version__}) for regime {regime}")
 
     n_gsps = int(n_gsps)
 
