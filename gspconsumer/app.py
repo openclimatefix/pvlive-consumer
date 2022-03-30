@@ -188,7 +188,7 @@ def save_to_database(session: Session, gsp_yields: List[GSPYieldSQL]):
     session.add_all(gsp_yields)
     session.commit()
 
-    update_latest_input_data_last_updated(session=session, component='gsp')
+    update_latest_input_data_last_updated(session=session, component="gsp")
 
 
 if __name__ == "__main__":
