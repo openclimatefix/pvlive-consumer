@@ -4,7 +4,7 @@ from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 from gspconsumer.app import app, pull_data_and_save
 
 
-def test_pull_data(db_session):
+def test_pull_data(db_session, input_data_last_updated_sql):
 
     gsps = [
         Location(gsp_id=0, label="GSP_0").to_orm(),
@@ -17,7 +17,7 @@ def test_pull_data(db_session):
     assert len(pv_yields) > 0
 
 
-def test_app(db_connection):
+def test_app(db_connection, input_data_last_updated_sql):
 
     runner = CliRunner()
     response = runner.invoke(app, ["--db-url", db_connection.url, "--n-gsps", 10])
@@ -32,7 +32,7 @@ def test_app(db_connection):
         assert len(gsp_yields) > 9
 
 
-def test_app_day_after(db_connection):
+def test_app_day_after(db_connection, input_data_last_updated_sql):
 
     runner = CliRunner()
     response = runner.invoke(

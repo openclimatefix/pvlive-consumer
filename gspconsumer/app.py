@@ -16,6 +16,7 @@ import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
+from nowcasting_datamodel.read.read import update_latest_input_data_last_updated
 from pvlive_api import PVLive
 from sqlalchemy.orm import Session
 
@@ -65,7 +66,6 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
     n_gsps = int(n_gsps)
 
     connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
-    # connection.create_all()
     with connection.get_session() as session:
         # 1. Read list of GSP systems (from local file)
         # and get their refresh times (refresh times can also be stored locally)
@@ -187,6 +187,8 @@ def save_to_database(session: Session, gsp_yields: List[GSPYieldSQL]):
 
     session.add_all(gsp_yields)
     session.commit()
+
+    update_latest_input_data_last_updated(session=session, component="gsp")
 
 
 if __name__ == "__main__":
