@@ -1,6 +1,5 @@
-
 from click.testing import CliRunner
-from nowcasting_datamodel.models.gsp import Location, LocationSQL, GSPYieldSQL
+from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 
 from gspconsumer.app import app, pull_data_and_save
 
@@ -36,7 +35,9 @@ def test_app(db_connection):
 def test_app_day_after(db_connection):
 
     runner = CliRunner()
-    response = runner.invoke(app, ["--db-url", db_connection.url, "--n-gsps", 10, "--regime", 'day-after'])
+    response = runner.invoke(
+        app, ["--db-url", db_connection.url, "--n-gsps", 10, "--regime", "day-after"]
+    )
     assert response.exit_code == 0, response.exception
 
     with db_connection.get_session() as session:
