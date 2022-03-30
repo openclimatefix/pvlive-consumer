@@ -1,8 +1,10 @@
 import os
+from datetime import datetime
 
 import pytest
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
+from nowcasting_datamodel.models.models import InputDataLastUpdatedSQL
 
 
 @pytest.fixture
@@ -26,3 +28,16 @@ def db_session(db_connection):
         s.begin()
         yield s
         s.rollback()
+
+
+@pytest.fixture
+def input_data_last_updated_sql(db_session):
+
+    now = datetime.utcnow()
+
+    i = InputDataLastUpdatedSQL(gsp=now, pv=now, satellite=now, nwp=now)
+
+    db_session.add(i)
+    db_session.commit()
+
+    return i
