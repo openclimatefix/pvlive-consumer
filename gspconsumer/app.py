@@ -65,7 +65,6 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
     n_gsps = int(n_gsps)
 
     connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
-    # connection.create_all()
     with connection.get_session() as session:
         # 1. Read list of GSP systems (from local file)
         # and get their refresh times (refresh times can also be stored locally)
