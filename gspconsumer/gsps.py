@@ -44,7 +44,8 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
             new_locations.append(location)
 
         all_locations = new_locations + locations_sql_db
-    if len(locations_sql_db) > n_gsps:
+
+    elif len(locations_sql_db) > n_gsps:
         logger.warning(f"There were {len(locations_sql_db)} GSPS in the database, "
                        f"should only be {n_gsps}")
 
@@ -56,7 +57,8 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     else:
         all_locations = locations_sql_db
 
-    assert len(all_locations) == n_gsps
+    assert len(all_locations) == n_gsps, \
+        f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}"
 
     all_locations = get_latest_gsp_yield(
         session=session, append_to_gsps=True, gsps=all_locations, regime=regime
