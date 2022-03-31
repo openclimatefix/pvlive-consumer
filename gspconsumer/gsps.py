@@ -32,7 +32,7 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}")
 
     # get missing gsps
-    if len(locations_sql_db) != n_gsps:
+    if len(locations_sql_db) < n_gsps:
         gsp_ids_in_db = [location.gsp_id for location in locations_sql_db]
         missing_gsp_ids = [gsp_id for gsp_id in range(0, n_gsps) if gsp_id not in gsp_ids_in_db]
 
@@ -44,6 +44,15 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
             new_locations.append(location)
 
         all_locations = new_locations + locations_sql_db
+    if len(locations_sql_db) > n_gsps:
+        logger.warning(f"There were {len(locations_sql_db)} GSPS in the database, "
+                       f"should only be {n_gsps}")
+
+        seen = set()
+        dupes = [x.gsp_id for x in locations_sql_db if x.gsp_id in seen or seen.add(x)]
+        gsp_ids_and_labels = [(x.gsp_id, x.label) for x in locations_sql_db]
+        raise Exception(f'The duplicate gsp ids are {dupes}, for all {gsp_ids_and_labels}')
+
     else:
         all_locations = locations_sql_db
 
