@@ -8,17 +8,17 @@ Update database with gsp details
 """
 
 
+import json
+from datetime import datetime, timezone
+
+import boto3
 import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
 from nowcasting_datamodel.models.gsp import Location
-from datetime import datetime,timezone
-import boto3
-import json
-from pvlive_api import PVLive
+from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
 from nowcasting_dataset.data_sources.gsp.eso import get_gsp_metadata_from_eso
-
+from pvlive_api import PVLive
 
 client = boto3.client("secretsmanager")
 response = client.get_secret_value(
@@ -41,14 +41,14 @@ with connection.get_session() as session:
     locations = [national_location] + locations
 
     for location in locations:
-        
+
         gsp_id = location.gsp_id
         print(gsp_id)
 
         # load installed capacity from pv live
-        print('Getting information pv live')
+        print("Getting information pv live")
         d = pvl.at_time(
-            datetime(2022,5,1,tzinfo=timezone.utc),
+            datetime(2022, 5, 1, tzinfo=timezone.utc),
             entity_type="gsp",
             extra_fields="installedcapacity_mwp",
             dataframe=True,
@@ -61,27 +61,15 @@ with connection.get_session() as session:
 
         # add labels
         if gsp_id == 0:
-            location.region_name = 'National'
-            location.gsp_name = 'National'
-            location.gsp_group = 'National'
+            location.region_name = "National"
+            location.gsp_name = "National"
+            location.gsp_group = "National"
         else:
-            details = eso[eso['gsp_id'] == gsp_id]
+            details = eso[eso["gsp_id"] == gsp_id]
             location.region_name = details.iloc[0].RegionName
             location.gsp_name = details.iloc[0].gsp_name
             location.gsp_group = details.iloc[0].gsp_name
 
         # update database
-        print('Updating database')
+        print("Updating database")
         session.commit()
-
-        
-        
-
-
-
-
-
-
-
-
-
