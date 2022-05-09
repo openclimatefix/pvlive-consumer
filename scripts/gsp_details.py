@@ -11,7 +11,7 @@ Update database with gsp details
 import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.read.read import get_all_locations
+from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
 from nowcasting_datamodel.models.gsp import Location
 from datetime import datetime,timezone
 import boto3
@@ -34,6 +34,11 @@ eso = get_gsp_metadata_from_eso()
 
 with connection.get_session() as session:
     locations = get_all_locations(session=session)
+    print(locations[0].__dict__)
+
+    national_location = get_location(session=session, gsp_id=0)
+    print(national_location.__dict__)
+    locations = [national_location] + locations
 
     for location in locations:
         
