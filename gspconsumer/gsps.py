@@ -62,6 +62,8 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
         len(all_locations) == n_gsps
     ), f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}"
 
+
+    logger.debug('Get latest GSP yields')
     all_locations = get_latest_gsp_yield(
         session=session, append_to_gsps=True, gsps=all_locations, regime=regime
     )
