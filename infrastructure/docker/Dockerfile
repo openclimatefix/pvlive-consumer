@@ -14,7 +14,7 @@ COPY requirements.txt app/requirements.txt
 
 # install requirements
 RUN pip install -r app/requirements.txt
-Run pip install git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
+RUN pip install git+https://github.com/peterdudfield/PV_Live-API.git@issue/v3-v4
 
 # copy library files
 COPY gspconsumer/ app/gspconsumer/

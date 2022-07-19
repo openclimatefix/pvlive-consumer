@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
     help="Number of gsps data to pull",
     type=click.STRING,
 )
-def app(db_url: str, regime: str = "in-day", n_gsps: int = 339):
+def app(db_url: str, regime: str = "in-day", n_gsps: int = 317):
     """
     Run GSP consumer app, this collect GSP live data and save it to a database.
 
@@ -102,6 +102,7 @@ def pull_data_and_save(
     """
 
     pvlive = PVLive()
+    pvlive.base_url = "https://api0.solar.sheffield.ac.uk/pvlive/api/v4/"
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
