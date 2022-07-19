@@ -18,7 +18,6 @@ response = client.get_secret_value(
 secret = json.loads(response["SecretString"])
 """ We have used a ssh tunnel to 'localhost' """
 db_url = f'postgresql://{secret["username"]}:{secret["password"]}@localhost:5433/{secret["dbname"]}'
-# db_url = 'postgresql://main:EUywa5pxJcveG3If@localhost:5433/forecastproduction'
 connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 # get installed cpapacity from file
