@@ -3,6 +3,6 @@ pandas
 pyyaml
 urllib3
 requests
-nowcasting_datamodel==0.0.57
-#git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
+nowcasting_datamodel==1.1.17
+git+https://github.com/peterdudfield/PV_Live-API.git@issue/v3-v4
 click
