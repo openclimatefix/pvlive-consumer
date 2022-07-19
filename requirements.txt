@@ -4,5 +4,5 @@ pyyaml
 urllib3
 requests
 nowcasting_datamodel==1.1.17
-git+https://github.com/peterdudfield/PV_Live-API.git@issue/v3-v4
+#git+https://github.com/peterdudfield/PV_Live-API.git@issue/v3-v4
 click
