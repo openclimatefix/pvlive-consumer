@@ -1,14 +1,14 @@
-import os
-import requests
-import pandas as pd
 import json
+import os
 
 import boto3
-import gspconsumer
 import pandas as pd
+import requests
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
+
+import gspconsumer
 
 # get db connection from database
 client = boto3.client("secretsmanager")
@@ -23,36 +23,36 @@ connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 # get installed cpapacity from file
 file = "data/pv_capacity_by_20220314_GSP.csv"
 dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
-installed_capacity = pd.read_csv(f'{dir}/{file}')
+installed_capacity = pd.read_csv(f"{dir}/{file}")
 
 # gsps names
-url = 'https://api0.solar.sheffield.ac.uk/pvlive/api/v4/gsp_list'
+url = "https://api0.solar.sheffield.ac.uk/pvlive/api/v4/gsp_list"
 respsone = requests.get(url=url)
 d = json.loads(respsone.text)
-gsps = pd.DataFrame(data=d['data'],columns=d['meta'])
-gsps['GSPs'] = gsps['gsp_name']
-
-
+gsps = pd.DataFrame(data=d["data"], columns=d["meta"])
+gsps["GSPs"] = gsps["gsp_name"]
 
 
 # get installed cpapacity from file
 file = "data/pv_capacity_by_20220314_GSP.csv"
 dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
-installed_capacity = pd.read_csv(f'{dir}/{file}')
+installed_capacity = pd.read_csv(f"{dir}/{file}")
 
 # add national
-total_installed_capacity_mw = installed_capacity['dc_capacity_MWp'].sum()
-national = pd.DataFrame(columns=['GSPs','dc_capacity_MWp'], data=[['NATIONAL',total_installed_capacity_mw]])
-installed_capacity = pd.concat([national,installed_capacity])
-installed_capacity.reset_index(inplace=True,drop=True)
+total_installed_capacity_mw = installed_capacity["dc_capacity_MWp"].sum()
+national = pd.DataFrame(
+    columns=["GSPs", "dc_capacity_MWp"], data=[["NATIONAL", total_installed_capacity_mw]]
+)
+installed_capacity = pd.concat([national, installed_capacity])
+installed_capacity.reset_index(inplace=True, drop=True)
 
 # remove unknown
-installed_capacity = installed_capacity[installed_capacity['GSPs'] != 'unknown']
+installed_capacity = installed_capacity[installed_capacity["GSPs"] != "unknown"]
 
 # merge with GSPs names
-installed_capacity = gsps.merge(installed_capacity,on='GSPs',how='left')
+installed_capacity = gsps.merge(installed_capacity, on="GSPs", how="left")
 installed_capacity = installed_capacity.fillna(0)
-installed_capacity.loc[0,'GSPs'] = 'National'
+installed_capacity.loc[0, "GSPs"] = "National"
 
 # update each gsp location
 with connection.get_session() as session:
@@ -63,11 +63,10 @@ with connection.get_session() as session:
         gsp_id = location.gsp_id
         print(gsp_id)
 
-        if gsp_id>= len(installed_capacity):
+        if gsp_id >= len(installed_capacity):
             break
 
-        
-        gsp_details = installed_capacity[installed_capacity['gsp_id'] == gsp_id].iloc[0]
+        gsp_details = installed_capacity[installed_capacity["gsp_id"] == gsp_id].iloc[0]
 
         location.installed_capacity_mw = gsp_details.dc_capacity_MWp
         location.region_name = gsp_details.GSPs
@@ -77,5 +76,3 @@ with connection.get_session() as session:
     # update database
     print("Updating database")
     session.commit()
-
-
