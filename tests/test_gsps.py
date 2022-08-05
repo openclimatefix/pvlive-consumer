@@ -11,14 +11,14 @@ from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
 def test_get_gsps(db_session):
 
     gsps = get_gsps(session=db_session, n_gsps=10, regime="in-day")
-    assert len(gsps) == 10
+    assert len(gsps) == 11 # (10 + national)
 
 
 def test_filter_pv_systems_which_have_new_data_no_data(db_session):
     gsps = get_gsps(session=db_session, n_gsps=10, regime="in-day")
     gsps_keep = filter_gsps_which_have_new_data(gsps=gsps)
 
-    assert len(gsps_keep) == 10
+    assert len(gsps_keep) == 11 # (10 + national)
 
 
 def test_filter_pv_systems_which_have_new_data(db_session):

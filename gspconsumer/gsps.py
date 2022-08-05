@@ -11,7 +11,9 @@ from sqlalchemy.orm import Session
 logger = logging.getLogger(__name__)
 
 
-def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> List[LocationSQL]:
+def get_gsps(
+    session: Session, n_gsps: int = 339, regime: str = "in-day", include_national: bool = True
+) -> List[LocationSQL]:
     """
     Get PV systems
 
@@ -21,20 +23,25 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
     :param session: database sessions
     :param n_gsps: number of gsps, 0 is national then 1 to 338 is the gsps
     :param regime: if its "in-day" or "day-after"
+    :param include_national: optionl if to get national data or not
     :return: list of gsps sqlalchemy objects
     """
-    # load all pv systems in database
+    gsp_ids = list(range(1,n_gsps+1))
+    if include_national:
+        gsp_ids = [0] + gsp_ids
+    total_n_gsps = len(gsp_ids)
 
+    # load all pv systems in database
     locations_sql_db: List[LocationSQL] = get_all_locations(
-        session=session, gsp_ids=list(range(0, n_gsps))
+        session=session, gsp_ids=gsp_ids
     )
 
-    logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}")
+    logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {total_n_gsps}")
 
     # get missing gsps
-    if len(locations_sql_db) < n_gsps:
+    if len(locations_sql_db) < total_n_gsps:
         gsp_ids_in_db = [location.gsp_id for location in locations_sql_db]
-        missing_gsp_ids = [gsp_id for gsp_id in range(0, n_gsps) if gsp_id not in gsp_ids_in_db]
+        missing_gsp_ids = [gsp_id for gsp_id in gsp_ids if gsp_id not in gsp_ids_in_db]
 
         logger.debug(f"There were {len(missing_gsp_ids)} missing gsp in the database")
 
@@ -45,9 +52,9 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
 
         all_locations = new_locations + locations_sql_db
 
-    elif len(locations_sql_db) > n_gsps:
+    elif len(locations_sql_db) > total_n_gsps:
         logger.warning(
-            f"There were {len(locations_sql_db)} GSPS in the database, " f"should only be {n_gsps}"
+            f"There were {len(locations_sql_db)} GSPS in the database, " f"should only be {total_n_gsps}"
         )
 
         seen = set()
@@ -59,15 +66,15 @@ def get_gsps(session: Session, n_gsps: int = 339, regime: str = "in-day") -> Lis
         all_locations = locations_sql_db
 
     assert (
-        len(all_locations) == n_gsps
-    ), f"Found {len(locations_sql_db)} locations in the database, should be {n_gsps}"
+        len(all_locations) == total_n_gsps
+    ), f"Found {len(locations_sql_db)} locations in the database, should be {total_n_gsps}"
 
     logger.debug("Get latest GSP yields")
     all_locations = get_latest_gsp_yield(
         session=session, append_to_gsps=True, gsps=all_locations, regime=regime
     )
 
-    assert len(all_locations) == n_gsps, len(all_locations)
+    assert len(all_locations) == total_n_gsps, len(all_locations)
 
     return all_locations
 
