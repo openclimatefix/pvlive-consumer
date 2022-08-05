@@ -26,7 +26,7 @@ def test_app(db_connection, input_data_last_updated_sql):
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 10
+        assert len(gsps) == 11
 
         gsp_yields = session.query(GSPYieldSQL).all()
         assert len(gsp_yields) > 9
@@ -43,7 +43,51 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 10
+        assert len(gsps) == 11
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 10 * 48  # 10 gsps with 48 hour settlement periods
+        assert len(gsp_yields) == 11 * 48  # (10 +national) gsps with 48 hour settlement periods
+
+
+def test_app_day_after_national_only(db_connection, input_data_last_updated_sql):
+
+    runner = CliRunner()
+    response = runner.invoke(
+        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"]
+    )
+    assert response.exit_code == 0, response.exception
+
+    with db_connection.get_session() as session:
+        gsps = session.query(LocationSQL).all()
+        _ = Location.from_orm(gsps[0])
+        assert len(gsps) == 1
+
+        gsp_yields = session.query(GSPYieldSQL).all()
+        assert len(gsp_yields) == 1 * 48  # 1 gsps with 48 hour settlement periods
+
+
+def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
+
+    runner = CliRunner()
+    response = runner.invoke(
+        app,
+        [
+            "--db-url",
+            db_connection.url,
+            "--n-gsps",
+            5,
+            "--regime",
+            "day-after",
+            "--include-national",
+            "false",
+        ],
+    )
+    assert response.exit_code == 0, response.exception
+
+    with db_connection.get_session() as session:
+        gsps = session.query(LocationSQL).all()
+        _ = Location.from_orm(gsps[0])
+        assert len(gsps) == 5
+
+        gsp_yields = session.query(GSPYieldSQL).all()
+        assert len(gsp_yields) == 5 * 48  # 1 gsps with 48 hour settlement periods
