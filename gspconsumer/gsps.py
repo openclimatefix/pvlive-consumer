@@ -26,17 +26,17 @@ def get_gsps(
     :param include_national: optionl if to get national data or not
     :return: list of gsps sqlalchemy objects
     """
-    gsp_ids = list(range(1,n_gsps+1))
+    gsp_ids = list(range(1, n_gsps + 1))
     if include_national:
         gsp_ids = [0] + gsp_ids
     total_n_gsps = len(gsp_ids)
 
     # load all pv systems in database
-    locations_sql_db: List[LocationSQL] = get_all_locations(
-        session=session, gsp_ids=gsp_ids
-    )
+    locations_sql_db: List[LocationSQL] = get_all_locations(session=session, gsp_ids=gsp_ids)
 
-    logger.debug(f"Found {len(locations_sql_db)} locations in the database, should be {total_n_gsps}")
+    logger.debug(
+        f"Found {len(locations_sql_db)} locations in the database, should be {total_n_gsps}"
+    )
 
     # get missing gsps
     if len(locations_sql_db) < total_n_gsps:
@@ -54,7 +54,8 @@ def get_gsps(
 
     elif len(locations_sql_db) > total_n_gsps:
         logger.warning(
-            f"There were {len(locations_sql_db)} GSPS in the database, " f"should only be {total_n_gsps}"
+            f"There were {len(locations_sql_db)} GSPS in the database, "
+            f"should only be {total_n_gsps}"
         )
 
         seen = set()
