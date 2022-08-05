@@ -14,7 +14,7 @@ REGIME: Regime of which to pull, either 'in-day' or 'day-after'
 N_GSPS: The number of gsps you want to pull
 INCLUDE_NATIONAL: Option to loal national data, or not
 
-These options can also be enter like this
+These options can also be enter like this:
 ```
 python gspconsumer/app.py --n-gsps=10
 ```
