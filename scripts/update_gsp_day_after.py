@@ -1,9 +1,9 @@
 """
 Update database with gsp yield values. Before was pulling the PV live data to early and values werent updated
 
-1. load installed capacity mw from pv live
-2. Load gsp_yield from database
-3. update database
+2. load installed capacity mw from pv live
+3. Load gsp_yield from database
+4. update database
 """
 
 
@@ -35,7 +35,9 @@ pvl = PVLive()
 
 with connection.get_session() as session:
     print('looping over gsps')
+    i=0
     for gsp_id in range(15,N_GSP+1):
+        i = i+1
         print(f'{gsp_id=}')
 
         # load installed capacity from pv live
@@ -66,13 +68,22 @@ with connection.get_session() as session:
 
             solar_generation_mw = d[d["datetime_gmt"] == datetime_utc]["generation_mw"].iloc[0]
             old_value = gsp_yield.solar_generation_kw
-            gsp_yield.solar_generation_kw = np.round(solar_generation_mw * 1000,4)
-            print(
-                f"Updating gsp id {gsp_id} for {datetime_utc} with value {gsp_yield.solar_generation_kw} "
-                f"(it used to be {old_value})"
+
+            if old_value != solar_generation_mw:
+                gsp_yield.solar_generation_kw = np.round(solar_generation_mw * 1000,4)
+                print(
+                    f"Updating gsp id {gsp_id} for {datetime_utc} with value {gsp_yield.solar_generation_kw} "
+                    f"(it used to be {old_value})"
             )
 
-        # update database
-        print("Updating database")
-        session.commit()
-        print("Updating database: done")
+        if i> 5:
+            i=0
+            # update database
+            print("Updating database")
+            session.commit()
+            print("Updating database: done")
+
+    # update database
+    print("Updating database")
+    session.commit()
+    print("Updating database: done")
