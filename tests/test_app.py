@@ -70,7 +70,17 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
 
     runner = CliRunner()
     response = runner.invoke(
-        app, ["--db-url", db_connection.url, "--n-gsps", 5, "--regime", "day-after","--include-national", "false"]
+        app,
+        [
+            "--db-url",
+            db_connection.url,
+            "--n-gsps",
+            5,
+            "--regime",
+            "day-after",
+            "--include-national",
+            "false",
+        ],
     )
     assert response.exit_code == 0, response.exception
 
@@ -80,4 +90,4 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 5* 48  # 1 gsps with 48 hour settlement periods
+        assert len(gsp_yields) == 5 * 48  # 1 gsps with 48 hour settlement periods

@@ -59,7 +59,7 @@ logger = logging.getLogger(__name__)
     help="Get the national data as well",
     type=click.BOOL,
 )
-def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national:bool = True):
+def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national: bool = True):
     """
     Run GSP consumer app, this collect GSP live data and save it to a database.
 
@@ -72,15 +72,19 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national
     logger.info(f"Running GSP Consumer app ({gspconsumer.__version__}) for regime {regime}")
 
     n_gsps = int(n_gsps)
-    total_n_gsps = n_gsps+1 if include_national else n_gsps
+    total_n_gsps = n_gsps + 1 if include_national else n_gsps
 
     connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
     with connection.get_session() as session:
         # 1. Read list of GSP systems (from local file)
         # and get their refresh times (refresh times can also be stored locally)
         logger.debug("Read list of GSP from database")
-        gsps = get_gsps(session=session, n_gsps=n_gsps, regime=regime, include_national=include_national)
-        assert len(gsps) == total_n_gsps, f"There are {len(gsps)} GSPS, there should be {total_n_gsps}"
+        gsps = get_gsps(
+            session=session, n_gsps=n_gsps, regime=regime, include_national=include_national
+        )
+        assert (
+            len(gsps) == total_n_gsps
+        ), f"There are {len(gsps)} GSPS, there should be {total_n_gsps}"
 
         # 2. Find most recent entered data (for each GSP) in OCF database,
         # and filter depending on refresh rate
@@ -89,7 +93,9 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national
             "and filter GSP depending on refresh rate"
         )
         gsps = filter_gsps_which_have_new_data(gsps=gsps)
-        assert len(gsps) <= total_n_gsps, f"There are {len(gsps)} GSPS, there should be <= {total_n_gsps}"
+        assert (
+            len(gsps) <= total_n_gsps
+        ), f"There are {len(gsps)} GSPS, there should be <= {total_n_gsps}"
 
         # 3. Pull data
         pull_data_and_save(gsps=gsps, session=session, regime=regime)
