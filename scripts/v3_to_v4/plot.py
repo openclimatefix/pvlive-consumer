@@ -2,11 +2,13 @@
 Plot the UK map with both old and new regions, to see how they overlap
 """
 
-import geopandas as gpd
-import gspconsumer
-import os
 import json
+import os
+
+import geopandas as gpd
 import plotly.graph_objects as go
+
+import gspconsumer
 
 file_v3 = "data/gsp_regions_20181031.geojson"
 file_v4 = "data/gsp_regions_20220314.geojson"
@@ -37,7 +39,6 @@ def make_trace_from_geopandas(gdf, z):
     )
 
     return trace
-
 
 
 trace_1 = make_trace_from_geopandas(v3_gdf, 1)
