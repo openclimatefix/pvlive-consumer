@@ -74,7 +74,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national
     n_gsps = int(n_gsps)
 
     include_national = bool(include_national)
-    total_n_gsps = n_gsps+1 if include_national else n_gsps
+    total_n_gsps = n_gsps + 1 if include_national else n_gsps
 
     connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
     with connection.get_session() as session:
