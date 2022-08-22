@@ -88,7 +88,8 @@ def app(
 
     logger.info(f"Running GSP Consumer app ({gspconsumer.__version__}) for regime {regime}")
 
-    check_uk_london_hour(hour=int(uk_london_time_hour))
+    if uk_london_time_hour is not None:
+        check_uk_london_hour(hour=int(uk_london_time_hour))
 
     n_gsps = int(n_gsps)
 
