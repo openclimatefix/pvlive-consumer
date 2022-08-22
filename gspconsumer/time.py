@@ -1,3 +1,4 @@
+""" Time helper functions """
 from datetime import datetime, timezone
 import pytz
 
