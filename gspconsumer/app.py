@@ -65,10 +65,16 @@ logger = logging.getLogger(__name__)
     default=None,
     envvar="UK_LONDON_HOUR",
     help="Optionl to only run code if UK time hour matches code this value. "
-         "This is to solve clock change issues when running with cron in UTC.",
+    "This is to solve clock change issues when running with cron in UTC.",
     type=click.INT,
 )
-def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national: bool = True, uk_london_time_hour:Optional[int] = None)
+def app(
+    db_url: str,
+    regime: str = "in-day",
+    n_gsps: int = 317,
+    include_national: bool = True,
+    uk_london_time_hour: Optional[int] = None,
+):
     """
     Run GSP consumer app, this collect GSP live data and save it to a database.
 
@@ -76,7 +82,7 @@ def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national
     :param regime: if its "in-day" or "day-after"
     :param n_gsps: How many gsps of data to pull
     :param include_national: optional if to get national data or not
-    :param uk_london_time_hour: Optionl to only run code if UK time hour matches code this value. 
+    :param uk_london_time_hour: Optionl to only run code if UK time hour matches code this value.
         This is to solve clock change issues when running with cron in UTC.
     """
 

@@ -6,7 +6,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def check_uk_london_hour(hour:int):
+
+def check_uk_london_hour(hour: int):
     """
     Check that the UK London hour is the same as given value
 
@@ -20,16 +21,18 @@ def check_uk_london_hour(hour:int):
     :param hour: The expected hour of UK london
     """
 
-    logger.debug(f'Checking that UK London hour is same as {hour}')
+    logger.debug(f"Checking that UK London hour is same as {hour}")
 
     # only check if 'hour' is not None
     if hour is None:
         return None
 
     now_utc = datetime.now(tz=timezone.utc)
-    now_uk_london = now_utc.astimezone(pytz.timezone('Europe/London'))
+    now_uk_london = now_utc.astimezone(pytz.timezone("Europe/London"))
 
     if hour != now_uk_london.hour:
 
-        raise Exception(f'Expected UK london hour to be {hour} but it was {now_uk_london}. '
-                        f'We will now not run the code.')
+        raise Exception(
+            f"Expected UK london hour to be {hour} but it was {now_uk_london}. "
+            f"We will now not run the code."
+        )
