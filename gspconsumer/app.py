@@ -22,6 +22,7 @@ from sqlalchemy.orm import Session
 
 import gspconsumer
 from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
+from gspconsumer.time import check_uk_london_hour
 
 logging.basicConfig(
     level=getattr(logging, os.getenv("LOGLEVEL", "DEBUG")),
@@ -59,17 +60,29 @@ logger = logging.getLogger(__name__)
     help="Get the national data as well",
     type=click.BOOL,
 )
-def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national: bool = True):
+@click.option(
+    "--uk-london-time-hour",
+    default=None,
+    envvar="UK_LONDON_HOUR",
+    help="Optionl to only run code if UK time hour matches code this value. "
+         "This is to solve clock change issues when running with cron in UTC.",
+    type=click.INT,
+)
+def app(db_url: str, regime: str = "in-day", n_gsps: int = 317, include_national: bool = True, uk_london_time_hour:Optional[int] = None)
     """
     Run GSP consumer app, this collect GSP live data and save it to a database.
 
     :param db_url: the Database url to save the PV system data
     :param regime: if its "in-day" or "day-after"
     :param n_gsps: How many gsps of data to pull
-    :param include_national: optionl if to get national data or not
+    :param include_national: optional if to get national data or not
+    :param uk_london_time_hour: Optionl to only run code if UK time hour matches code this value. 
+        This is to solve clock change issues when running with cron in UTC.
     """
 
     logger.info(f"Running GSP Consumer app ({gspconsumer.__version__}) for regime {regime}")
+
+    check_uk_london_hour(hour=uk_london_time_hour)
 
     n_gsps = int(n_gsps)
 
