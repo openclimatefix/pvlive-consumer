@@ -46,7 +46,8 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 11
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 11 * 48  # (10 +national) gsps with 48 hour settlement periods
+        assert len(gsp_yields) == 11 * 49  # (10 +national) gsps with
+        # 8 half hour settlement periods + midnight
 
 
 def test_app_day_after_national_only(db_connection, input_data_last_updated_sql):
@@ -63,7 +64,7 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
         assert len(gsps) == 1
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 1 * 48  # 1 gsps with 48 hour settlement periods
+        assert len(gsp_yields) == 1 * 49  # 1 gsps with 48 half hour settlement periods + midnight
 
 
 def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
@@ -90,4 +91,4 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 5 * 48  # 1 gsps with 48 hour settlement periods
+        assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
