@@ -151,7 +151,9 @@ def pull_data_and_save(
         start = datetime_utc.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(
             hours=24
         )
-        end = datetime_utc.replace(hour=0, minute=0, second=0, microsecond=0)
+        end = datetime_utc.replace(
+            hour=0, minute=0, second=1, microsecond=0
+        )  # so we include the last value
 
     logger.info(f"Pulling data for {len(gsps)} GSP for {datetime_utc}")
 
