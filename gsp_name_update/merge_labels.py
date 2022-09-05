@@ -18,7 +18,7 @@ print(old_df.head())
 joined_df = new_df.merge(old_df, how='left', on=['gsp_name'])
 print(joined_df.head())
 
-# dropping duplicates from the joined file 
+# dropping duplicates from the joined file
 joined_df.drop_duplicates(subset=['gsp_id_x'])
 print('subset removed')
 
