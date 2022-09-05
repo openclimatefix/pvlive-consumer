@@ -27,5 +27,4 @@ joined_df.to_csv("GSPConsumer/gsp_name_update/gsp_new_ids_and_names.csv")
 print(joined_df.head())
 
 
-
 print("finished")
