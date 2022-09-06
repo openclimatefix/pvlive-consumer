@@ -1,5 +1,5 @@
 ,gsp_id_x,gsp_name,region_name
-0,0,NATIONAL,
+0,0,NATIONAL, National
 1,1,ABHA1,Abham
 2,2,ABNE_P,Abernethy
 3,3,ABTH_1,Aberthaw
@@ -238,7 +238,7 @@
 252,236,PORA_P,Port Ann
 253,237,PORD,Port Dundas
 254,238,PYLE_1,Pyle
-255,239,QUOI_P,QUOI_P
+255,239,QUOI_P,Quoich
 256,240,RAIN_1,Rainhill
 257,241,RANN_P,Rannoch
 258,242,RASS_1,Rassau
