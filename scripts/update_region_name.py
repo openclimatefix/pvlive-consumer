@@ -28,7 +28,7 @@ db_url = f'postgresql://{secret["username"]}:{secret["password"]}@localhost:5433
 connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 # load new region names
-data_df = pd.read_Csv("xxx.csv")
+data_df = pd.read_Csv("GSPConsumer/gsp_name_update/gsp_new_ids_and_name_edited.csv")
 # this has columns 'gsp_id' and 'region_name'
 
 with connection.get_session() as session:
