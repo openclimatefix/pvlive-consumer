@@ -3,8 +3,8 @@
 1,1,ABHA1,116.0,Abham
 2,2,ABNE_P,161.0,Abernethy
 3,3,ABTH_1,104.0,Aberthaw
-4,4,ACTL_2|CBNK_H|GREE_H|PERI_H,,
-5,5,ACTL_C|WISD_1|WISD_6,,
+4,4,ACTL_2|CBNK_H|GREE_H|PERI_H,Willesden (Zone 1)
+5,5,ACTL_C|WISD_1|WISD_6,Willesden (Zone 2)
 6,6,ALNE_P,162.0,Alness
 7,7,ALST_3|USKM_1,,
 8,8,ALVE1,117.0,Alverdiscott
@@ -28,7 +28,6 @@
 26,26,BISW_1,133.0,Bishops Wood
 27,27,BLYTB1,81.0,Blyth 66kV
 28,28,BLYTH132,292.0,Blyth 132kV
-29,28,BLYTH132,292.0,Blyth 132kV
 30,29,BOAG_P,170.0,Boat of Garten
 31,30,BOLN_1,97.0,Bolney
 32,31,BONN,171.0,Bonnybridge
@@ -55,10 +54,8 @@
 53,52,CAMB_01,12.0,Camblesforth
 54,53,CANTN1|RICH_J|RICH1,,
 55,54,CAPEA1,291.0,Capenhurst
-56,54,CAPEA1,291.0,Capenhurst
 57,55,CARE_1,105.0,Cardiff East
 58,56,CARR_1,299.0,Carrington
-59,56,CARR_1,299.0,Carrington
 60,57,CASS_P,182.0,Cassley
 61,58,CATY,179.0,Carntyne
 62,59,CEAN_P,183.0,Ceannacroc
@@ -68,13 +65,11 @@
 66,63,CHAS,186.0,Charlotte Street
 67,64,CHIC_1,44.0,Chickerell
 68,65,CHSI_1,295.0,Chessington
-69,65,CHSI_1,295.0,Chessington
 70,66,CHTE_1,123.0,Chesterfield
 71,67,CITR_1,22.0,City Road
 72,68,CLAY_P,187.0,Clayhills
 73,69,CLYM,188.0,Clyde’s Mill
 74,70,COAT,302.0,Coatbridge
-75,70,COAT,302.0,Coatbridge
 76,71,COCK,189.0,Cockenzie
 77,72,CONQA1|SASA,,
 78,73,COUA_P,156.0,Coupar Angus
@@ -84,7 +79,6 @@
 82,77,CRAI_P,191.0,Craigiebuckler
 83,78,CREB_1,308.0,Creyke Beck
 84,79,CROO,303.0,Crookston
-85,79,CROO,303.0,Crookston
 86,80,CUMB,192.0,Cumbernauld
 87,81,CUPA,193.0,Cupar
 88,82,CURR,194.0,Currie
@@ -101,8 +95,6 @@
 99,93,DUDH_P,201.0,Dudhope
 100,94,DUGR_P,206.0,Dunvegan
 101,95,DUMF,304.0,Dumfries
-102,95,DUMF,304.0,Dumfries
-103,95,DUMF,304.0,Dumfries
 104,96,DUNB,202.0,Dunbar
 105,97,DUNF,204.0,Dunfermline
 106,98,DUNO_P,205.0,Dunoon
@@ -118,8 +110,6 @@
 116,108,ELGI_P,213.0,Elgin
 117,109,ELLA_1,150.0,Elland
 118,110,ELST_1,296.0,Elstree
-119,110,ELST_1,296.0,Elstree
-120,110,ELST_1,296.0,Elstree
 121,111,ENDE_1,3.0,Enderby
 122,112,ERSK,214.0,Erskine
 123,113,EXET1,119.0,Exeter
@@ -147,13 +137,20 @@
 145,135,GREN_1,4.0,Grendon
 146,136,GRIW_1,14.0,Grimsby West
 147,137,GRMO,305.0,Grangemouth
-148,137,GRMO,305.0,Grangemouth
 149,138,GRUB_P,228.0,Grudie Bridge
+<<<<<<< HEAD
 150,139,G_EXTRA_12,,
 151,140,HACK_1|HACK_6,,
 152,141,HAGR,229.0,Haggs Road
 153,142,HAMHC1,141.0,Hams Hall
 154,143,HARK_1|HUTT_1|RRIG,,
+=======
+150,139,G_EXTRA_12,
+151,140,HACK_1|HACK_6,Hackney
+152,141,HAGR,229.0,Haggs Road
+153,142,HAMHC1,141.0,Hams Hall
+154,143,HARK_1|HUTT_1|RRIG,
+>>>>>>> 1f3e1609e1274e3efa4c5ca63762bb2f614c294f
 155,144,HARM_6,82.0,Hart Moor
 156,145,HAWI,230.0,Hawick
 157,146,HAWP_6,83.0,Hawthorn Pit
@@ -175,13 +172,11 @@
 173,162,KEAD_1,15.0,Keadby
 174,163,KEAR_1|KEAR_3,,
 175,164,KEMS_1,297.0,Kemsley
-176,164,KEMS_1,297.0,Kemsley
 177,165,KIBY_1,37.0,Kirkby (_D)
 178,166,KIBY_G|WASF_1,,
 179,167,KIER,239.0,Killermont
 180,168,KIIN_P,238.0,Killin
 181,169,KILB,306.0,Kilbowie
-182,169,KILB,306.0,Kilbowie
 183,170,KILS,240.0,Kilmarnock South
 184,171,KILT,241.0,Kilmarnock Town
 185,172,KILW,242.0,Kilwinning
@@ -219,11 +214,9 @@
 217,204,NAIR_P,253.0,Nairn
 218,205,NEAR,254.0,Newarthill
 219,206,NECE_1,301.0,Nechells
-220,206,NECE_1,301.0,Nechells
 221,207,NEEP_3,125.0,Neepsend
 222,208,NETS,255.0,Newton Stewart
 223,209,NEWX_6,290.0,New Cross
-224,209,NEWX_6,290.0,New Cross
 225,210,NFLE,27.0,Northfleet East
 226,211,NHYD_6,64.0,North Hyde
 227,212,NINF_1,102.0,Ninfield
@@ -248,7 +241,6 @@
 246,231,PENW_1|STAH_1|WABO,,
 247,232,PERS_P,259.0,Persley
 248,233,PITS_3,293.0,Pitsmoor
-249,233,PITS_3,293.0,Pitsmoor
 250,234,POOB,263.0,Portobello
 251,235,POPP_3,154.0,Poppleton
 252,236,PORA_P,261.0,Port Ann
@@ -268,14 +260,12 @@
 266,250,RUGEB1,145.0,Rugeley
 267,251,RYEH_1,67.0,Rye House
 268,252,SACO,307.0,Saltcoats
-269,252,SACO,307.0,Saltcoats
 270,253,SALH_1,50.0,Saltholme
 271,254,SALT_1,309.0,Saltend North
 272,255,SANX,275.0,St Andrews Cross
 273,256,SBAR,7.0,Stoke Bardolph
 274,257,SEAB1,109.0,Seabank
 275,258,SELL_1,294.0,Sellindge
-276,258,SELL_1,294.0,Sellindge
 277,259,SFEG_P,273.0,St Fergus Gas Terminal
 278,260,SFIL_P,274.0,St Fillans
 279,261,SHEC_3,127.0,Sheffield City
@@ -308,7 +298,6 @@
 306,288,THSO_P,160.0,Thurso
 307,289,THUR_6,129.0,Thurcroft
 308,290,TILBB_1,298.0,Tilbury
-309,290,TILBB_1,298.0,Tilbury
 310,291,TOTT_1,30.0,Tottenham
 311,292,TRAW_1,52.0,Trawsfynydd
 312,293,TUMB_P,283.0,Tummel Bridge
