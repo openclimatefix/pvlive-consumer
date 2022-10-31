@@ -1,6 +1,6 @@
 """ GSP functions """
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 from nowcasting_datamodel.models.gsp import LocationSQL
