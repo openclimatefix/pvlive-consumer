@@ -1,6 +1,6 @@
 """ GSP functions """
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 from nowcasting_datamodel.models.gsp import LocationSQL
@@ -70,9 +70,16 @@ def get_gsps(
         len(all_locations) == total_n_gsps
     ), f"Found {len(locations_sql_db)} locations in the database, should be {total_n_gsps}"
 
+    # Only get data that is 1 week odd
+    datetime_utc = datetime.now(timezone.utc) - timedelta(days=7)
+
     logger.debug("Get latest GSP yields")
     all_locations = get_latest_gsp_yield(
-        session=session, append_to_gsps=True, gsps=all_locations, regime=regime
+        session=session,
+        append_to_gsps=True,
+        gsps=all_locations,
+        regime=regime,
+        datetime_utc=datetime_utc,
     )
 
     assert len(all_locations) == total_n_gsps, len(all_locations)
