@@ -23,7 +23,8 @@ gsp_yield_df.set_index("datetime_gmt", drop=True, inplace=True)
 
 
 # get bmrs data
-client = api.Client("52g2ac5kwwh5chc")
+key = 'notset'
+client = api.Client(key)
 
 # one month can take a few mins to run, 1 month takes about 5 mins
 solar_bmrs_all = client.get_B1440(start_datetime, end_datetime)
