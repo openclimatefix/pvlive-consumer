@@ -6,13 +6,12 @@ from ElexonDataPortal import api
 from pvlive_api import PVLive
 
 gsp_id = 0
-# validation
-start_datetime = datetime(2021, 9, 1, tzinfo=timezone.utc)
+# train
+start_datetime = datetime(2020, 1, 1, tzinfo=timezone.utc)
 end_datetime = datetime(2021, 1, 1, tzinfo=timezone.utc)
-
-start_datetime = datetime(2022, 9, 1, tzinfo=timezone.utc)
-end_datetime = datetime(2022, 9, 10, tzinfo=timezone.utc)
-
+# validation
+start_datetime = datetime(2021, 1, 1, tzinfo=timezone.utc)
+end_datetime = datetime(2021, 9, 1, tzinfo=timezone.utc)
 
 # PV live
 pvlive = PVLive()
@@ -32,7 +31,8 @@ solar_bmrs = solar_bmrs_all
 solar_bmrs = solar_bmrs[solar_bmrs["powerSystemResourceType"] == '"Solar"']
 solar_bmrs = solar_bmrs[solar_bmrs["processType"] == "Day Ahead"]
 
-solar_bmrs.index = solar_bmrs["local_datetime"]
+solar_bmrs["datetime_utc"] = solar_bmrs["local_datetime"].dt.tz_convert('UTC')
+solar_bmrs.index = solar_bmrs["datetime_utc"]
 solar_bmrs = solar_bmrs[["quantity"]]
 solar_bmrs = solar_bmrs.resample("30min").mean()
 
@@ -42,6 +42,8 @@ solar_bmrs.index = solar_bmrs.index + pd.Timedelta(minutes=30)
 # get error
 error = solar_bmrs.join(gsp_yield_df)
 error["diff"] = error["quantity"] - error["generation_mw"]
+
+error.to_csv(f'bmrs_and_pv_live_{start_datetime}_{end_datetime}.csv')
 
 me = error["diff"].mean()
 mae = error["diff"].abs().mean()
@@ -61,9 +63,7 @@ estimates_pvlive = gsp_yield_df["generation_mw"]
 pv_df = pd.DataFrame(index=datetimes_pvlive, data=estimates_pvlive, columns=["pvlive"])
 traces.append(go.Scatter(x=datetimes_pvlive, y=estimates_pvlive, name="pvlive"))
 
-
-# not sure why to minus 1 hour, but it does seem to line up, must be a timezone thing
-datetimes_bmrs = solar_bmrs.index - pd.Timedelta(hours=1)
+datetimes_bmrs = solar_bmrs.index
 estimates_bmrs = solar_bmrs["quantity"]
 traces.append(go.Scatter(x=datetimes_bmrs, y=estimates_bmrs, name="brms"))
 
