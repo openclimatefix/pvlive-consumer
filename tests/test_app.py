@@ -2,18 +2,18 @@ from click.testing import CliRunner
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 from nowcasting_datamodel.models.models import national_gb_label
 
-
 from gspconsumer.app import app, pull_data_and_save
 
 
 def make_national(db_connection):
-    
+
     gsps = [
         Location(gsp_id=0, label=national_gb_label, installed_capacity_mw=10).to_orm(),
     ]
     with db_connection.get_session() as session:
         session.add_all(gsps)
         session.commit()
+
 
 def test_pull_data(db_session, input_data_last_updated_sql):
 
@@ -30,7 +30,7 @@ def test_pull_data(db_session, input_data_last_updated_sql):
 
 def test_app(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
-    
+
     runner = CliRunner()
     response = runner.invoke(app, ["--db-url", db_connection.url, "--n-gsps", 10])
     assert response.exit_code == 0, response.exception

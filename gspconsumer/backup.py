@@ -2,7 +2,7 @@
 
 import logging
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, LocationSQL
 from nowcasting_datamodel.read.read_gsp import get_gsp_yield
