@@ -46,7 +46,8 @@ def get_number_gsp_yields(
     n_gsp_yields_sql = query.all()[0][0]
 
     logger.debug(
-        f"Found {n_gsp_yields_sql} GSP yields from {start_datetime_utc} to {end_datetime_utc}, not including national"
+        f"Found {n_gsp_yields_sql} GSP yields from "
+        f"{start_datetime_utc} to {end_datetime_utc}, not including national"
     )
 
     return n_gsp_yields_sql
