@@ -94,25 +94,23 @@ def make_gsp_yields_from_national(
     gsp_yields = []
     for national_gsp_yield in national_gsp_yields:
         for location in locations:
-            if location.gsp_id == 0:
-                break
-
-            if location.installed_capacity_mw is not None:
-                factor = (
-                    location.installed_capacity_mw
-                    / national_gsp_yield.location.installed_capacity_mw
+            if location.gsp_id != 0:
+                if location.installed_capacity_mw is not None:
+                    factor = (
+                        location.installed_capacity_mw
+                        / national_gsp_yield.location.installed_capacity_mw
+                    )
+                else:
+                    factor = 1 / national_gsp_yield.location.installed_capacity_mw
+                logger.debug(f"National to GSP factor for gsp id {location.gsp_id} is {factor}")
+    
+                gsp_yield = GSPYieldSQL(
+                    datetime_utc=national_gsp_yield.datetime_utc,
+                    solar_generation_kw=national_gsp_yield.solar_generation_kw * factor,
+                    regime=national_gsp_yield.regime,
                 )
-            else:
-                factor = 1 / national_gsp_yield.location.installed_capacity_mw
-            logger.debug(f"National to GSP factor for gsp id {location.gsp_id} is {factor}")
-
-            gsp_yield = GSPYieldSQL(
-                datetime_utc=national_gsp_yield.datetime_utc,
-                solar_generation_kw=national_gsp_yield.solar_generation_kw * factor,
-                regime=national_gsp_yield.regime,
-            )
-            gsp_yield.location = location
-            gsp_yields.append(gsp_yield)
+                gsp_yield.location = location
+                gsp_yields.append(gsp_yield)
 
     logger.debug(f"Made {len(gsp_yields)} extra gsp yields by using the national value")
 
