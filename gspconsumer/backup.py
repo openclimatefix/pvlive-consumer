@@ -18,6 +18,15 @@ def get_number_gsp_yields(
     session: Session,
     regime: Optional[str] = None,
 ) -> int:
+    """
+    Get the numner of gsp yields
+
+    :param start_datetime_utc: start time to filter on
+    :param end_datetime_utc: end time to filter on
+    :param session: database session
+    :param regime: regim
+    :return: the number of gsp yields in that regime
+    """
 
     query = session.query(func.count(GSPYieldSQL.id))
     query = query.join(LocationSQL)
@@ -59,8 +68,8 @@ def make_gsp_yields_from_national(
     :param locations:
     :return:
     """
-    
-    logger.info('Make GSP yields from national if needed')
+
+    logger.info("Make GSP yields from national if needed")
 
     # 1. check number of gsps
     n_gsp_yeilds_sql = get_number_gsp_yields(
@@ -89,13 +98,12 @@ def make_gsp_yields_from_national(
 
             if location.installed_capacity_mw is not None:
                 factor = (
-                    location.installed_capacity_mw / national_gsp_yield.location.installed_capacity_mw
+                    location.installed_capacity_mw
+                    / national_gsp_yield.location.installed_capacity_mw
                 )
             else:
-                factor = (
-                        1 / national_gsp_yield.location.installed_capacity_mw
-                )
-            logger.debug(f'National to GSP factor for gsp id {location.gsp_id} is {factor}')
+                factor = 1 / national_gsp_yield.location.installed_capacity_mw
+            logger.debug(f"National to GSP factor for gsp id {location.gsp_id} is {factor}")
 
             gsp_yield = GSPYieldSQL(
                 datetime_utc=national_gsp_yield.datetime_utc,
