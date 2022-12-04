@@ -21,6 +21,7 @@ from pvlive_api import PVLive
 from sqlalchemy.orm import Session
 
 import gspconsumer
+from gspconsumer.backup import make_gsp_yields_from_national
 from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
 from gspconsumer.time import check_uk_london_hour
 
@@ -212,8 +213,13 @@ def pull_data_and_save(
                 save_to_database(session=session, gsp_yields=all_gsps_yields_sql)
                 all_gsps_yields_sql = []
 
-    # 4. Save to database - perhaps check no duplicate data. (for each GSP)
-    save_to_database(session=session, gsp_yields=all_gsps_yields_sql)
+    # 5. check gsps data is avaialble
+    extra_gsp_yields = make_gsp_yields_from_national(
+        session=session, start=start, end=end, regime=regime, locations=gsps
+    )
+
+    # 6. Save to database - perhaps check no duplicate data. (for each GSP)
+    save_to_database(session=session, gsp_yields=extra_gsp_yields + all_gsps_yields_sql)
 
 
 def save_to_database(session: Session, gsp_yields: List[GSPYieldSQL]):

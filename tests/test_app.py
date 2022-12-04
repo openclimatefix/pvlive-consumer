@@ -1,13 +1,24 @@
 from click.testing import CliRunner
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
+from nowcasting_datamodel.models.models import national_gb_label
 
 from gspconsumer.app import app, pull_data_and_save
+
+
+def make_national(db_connection):
+
+    gsps = [
+        Location(gsp_id=0, label=national_gb_label, installed_capacity_mw=10).to_orm(),
+    ]
+    with db_connection.get_session() as session:
+        session.add_all(gsps)
+        session.commit()
 
 
 def test_pull_data(db_session, input_data_last_updated_sql):
 
     gsps = [
-        Location(gsp_id=0, label="GSP_0").to_orm(),
+        Location(gsp_id=0, label="GSP_0", installed_capacity_mw=10).to_orm(),
     ]
     gsps[0].last_gsp_yield = None
 
@@ -18,6 +29,7 @@ def test_pull_data(db_session, input_data_last_updated_sql):
 
 
 def test_app(db_connection, input_data_last_updated_sql):
+    make_national(db_connection)
 
     runner = CliRunner()
     response = runner.invoke(app, ["--db-url", db_connection.url, "--n-gsps", 10])
@@ -28,11 +40,12 @@ def test_app(db_connection, input_data_last_updated_sql):
         _ = Location.from_orm(gsps[0])
         assert len(gsps) == 11
 
-        gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) > 9
+        gsp_yields = session.query(GSPYieldSQL).order_by(GSPYieldSQL.datetime_utc).all()
+        assert len(gsp_yields) == 22
 
 
 def test_app_day_after(db_connection, input_data_last_updated_sql):
+    make_national(db_connection)
 
     runner = CliRunner()
     response = runner.invoke(
@@ -51,6 +64,7 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
 
 
 def test_app_day_after_national_only(db_connection, input_data_last_updated_sql):
+    make_national(db_connection)
 
     runner = CliRunner()
     response = runner.invoke(
