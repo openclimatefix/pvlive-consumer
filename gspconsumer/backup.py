@@ -103,7 +103,7 @@ def make_gsp_yields_from_national(
                 else:
                     factor = 1 / national_gsp_yield.location.installed_capacity_mw
                 logger.debug(f"National to GSP factor for gsp id {location.gsp_id} is {factor}")
-    
+
                 gsp_yield = GSPYieldSQL(
                     datetime_utc=national_gsp_yield.datetime_utc,
                     solar_generation_kw=national_gsp_yield.solar_generation_kw * factor,
