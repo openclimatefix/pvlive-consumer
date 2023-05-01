@@ -31,7 +31,6 @@ def check_uk_london_hour(hour: int):
     now_uk_london = now_utc.astimezone(pytz.timezone("Europe/London"))
 
     if hour != now_uk_london.hour:
-
         raise Exception(
             f"Expected UK london hour to be {hour} but it was {now_uk_london}. "
             f"We will now not run the code."

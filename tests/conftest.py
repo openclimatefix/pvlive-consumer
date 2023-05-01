@@ -9,7 +9,6 @@ from nowcasting_datamodel.models.models import InputDataLastUpdatedSQL
 
 @pytest.fixture
 def db_connection():
-
     url = os.getenv("DB_URL", "sqlite:///test.db")
 
     connection = DatabaseConnection(url=url, base=Base_Forecast, echo=False)
@@ -32,7 +31,6 @@ def db_session(db_connection):
 
 @pytest.fixture
 def input_data_last_updated_sql(db_session):
-
     now = datetime.utcnow()
 
     i = InputDataLastUpdatedSQL(gsp=now, pv=now, satellite=now, nwp=now)

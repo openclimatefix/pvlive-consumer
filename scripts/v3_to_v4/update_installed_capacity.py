@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
+from nowcasting_datamodel.read.read import get_all_locations
 
 import gspconsumer
 
@@ -59,7 +59,6 @@ with connection.get_session() as session:
     locations = get_all_locations(session=session)
 
     for location in locations:
-
         gsp_id = location.gsp_id
         print(gsp_id)
 

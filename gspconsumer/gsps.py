@@ -115,7 +115,6 @@ def filter_gsps_which_have_new_data(
 
     keep_gsps = []
     for i, gsp in enumerate(gsps):
-
         logger.debug(f"Looking at {i}th GSP, out of {len(gsps)} gsps")
 
         last_yield = gsp.last_gsp_yield
