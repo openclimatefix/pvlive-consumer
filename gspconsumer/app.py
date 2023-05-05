@@ -162,7 +162,12 @@ def pull_data_and_save(
     for gsp in gsps:
 
         gsp_yield_df: pd.DataFrame = pvlive.between(
-            start=start, end=end, entity_type="gsp", entity_id=gsp.gsp_id, dataframe=True, extra_fields="installedcapacity_mwp"
+            start=start,
+            end=end,
+            entity_type="gsp",
+            entity_id=gsp.gsp_id,
+            dataframe=True,
+            extra_fields="installedcapacity_mwp",
         )
 
         logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
@@ -205,11 +210,13 @@ def pull_data_and_save(
                 gsp_yield_sql.location = gsp
 
             # update installed capacity
-            current_installed_capacity =  gsp_yield_sql.location.installed_capacity_mw
+            current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
             new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
             if current_installed_capacity != new_installed_capacity:
-                logger.debug(f'Going to update the capacitu from '
-                             f'{current_installed_capacity} to {new_installed_capacity}')
+                logger.debug(
+                    f"Going to update the capacitu from "
+                    f"{current_installed_capacity} to {new_installed_capacity}"
+                )
                 gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
 
             logger.debug(f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}")
