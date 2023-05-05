@@ -215,7 +215,7 @@ def pull_data_and_save(
             new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
             if current_installed_capacity != new_installed_capacity:
                 logger.debug(
-                    f"Going to update the capacitu from "
+                    f"Going to update the capacity from "
                     f"{current_installed_capacity} to {new_installed_capacity}"
                 )
                 gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
