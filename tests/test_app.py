@@ -6,7 +6,6 @@ from gspconsumer.app import app, pull_data_and_save
 
 
 def make_national(db_connection):
-
     gsps = [
         Location(gsp_id=0, label=national_gb_label, installed_capacity_mw=10).to_orm(),
     ]
@@ -16,7 +15,6 @@ def make_national(db_connection):
 
 
 def test_pull_data(db_session, input_data_last_updated_sql):
-
     gsps = [
         Location(gsp_id=0, label="GSP_0", installed_capacity_mw=10).to_orm(),
     ]
@@ -82,7 +80,6 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
 
 
 def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
-
     runner = CliRunner()
     response = runner.invoke(
         app,

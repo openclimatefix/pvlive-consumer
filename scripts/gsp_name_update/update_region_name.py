@@ -13,8 +13,7 @@ import boto3
 import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.read.read import get_all_locations, get_location
-from pvlive_api import PVLive
+from nowcasting_datamodel.read.read import get_location
 
 import gspconsumer
 
@@ -39,7 +38,6 @@ with connection.get_session() as session:
     # locations = get_all_locations(session=session)
 
     for i, row in data_df.iterrows():
-
         location = get_location(session=session, gsp_id=row.gsp_id_x)
         location.region_name = row.region_name
 

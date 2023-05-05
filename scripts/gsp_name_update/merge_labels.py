@@ -1,6 +1,4 @@
 # import the files
-import csv
-from turtle import left
 
 import pandas as pd
 

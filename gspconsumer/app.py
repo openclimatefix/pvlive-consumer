@@ -160,7 +160,6 @@ def pull_data_and_save(
 
     all_gsps_yields_sql = []
     for gsp in gsps:
-
         gsp_yield_df: pd.DataFrame = pvlive.between(
             start=start, end=end, entity_type="gsp", entity_id=gsp.gsp_id, dataframe=True
         )
@@ -172,7 +171,6 @@ def pull_data_and_save(
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")
         else:
-
             # filter by datetime
             gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] >= start]
             gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] < end]

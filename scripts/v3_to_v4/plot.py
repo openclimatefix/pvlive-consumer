@@ -23,7 +23,6 @@ v4_gdf = v4_gdf.to_crs(4326)
 
 
 def make_trace_from_geopandas(gdf, z):
-
     z_list = [z] * len(gdf)
 
     gdf = gdf.to_crs(4326)
