@@ -11,13 +11,14 @@ import os
 from datetime import datetime, timezone
 
 import geopandas as gpd
-import gspconsumer
 import pandas as pd
 import plotly.graph_objects as go
 from nowcasting_dataset.data_sources.gsp.eso import get_gsp_metadata_from_eso
 
 # get installed capacity from pv live (this takes ~30 seconds)
 from nowcasting_dataset.data_sources.gsp.pvlive import get_installed_capacity
+
+import gspconsumer
 
 file_v3 = "data/gsp_regions_20181031.geojson"
 file_v4 = "data/gsp_regions_20220314.geojson"
