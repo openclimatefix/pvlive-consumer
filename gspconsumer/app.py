@@ -196,7 +196,9 @@ def pull_data_and_save(
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
-            gsp_yield_df = gsp_yield_df[["solar_generation_kw", "datetime_utc", "installedcapacity_mwp"]]
+            gsp_yield_df = gsp_yield_df[
+                ["solar_generation_kw", "datetime_utc", "installedcapacity_mwp"]
+            ]
             gsp_yield_df["regime"] = regime
 
             # change to list of pydantic objects
