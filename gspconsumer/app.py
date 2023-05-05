@@ -161,7 +161,12 @@ def pull_data_and_save(
     all_gsps_yields_sql = []
     for gsp in gsps:
         gsp_yield_df: pd.DataFrame = pvlive.between(
-            start=start, end=end, entity_type="gsp", entity_id=gsp.gsp_id, dataframe=True
+            start=start,
+            end=end,
+            entity_type="gsp",
+            entity_id=gsp.gsp_id,
+            dataframe=True,
+            extra_fields="installedcapacity_mwp",
         )
 
         logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
@@ -191,7 +196,9 @@ def pull_data_and_save(
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
-            gsp_yield_df = gsp_yield_df[["solar_generation_kw", "datetime_utc"]]
+            gsp_yield_df = gsp_yield_df[
+                ["solar_generation_kw", "datetime_utc", "installedcapacity_mwp"]
+            ]
             gsp_yield_df["regime"] = regime
 
             # change to list of pydantic objects
@@ -201,6 +208,16 @@ def pull_data_and_save(
             gsp_yields_sql = [gsp_yield.to_orm() for gsp_yield in gsp_yields]
             for gsp_yield_sql in gsp_yields_sql:
                 gsp_yield_sql.location = gsp
+
+            # update installed capacity
+            current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
+            new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
+            if current_installed_capacity != new_installed_capacity:
+                logger.debug(
+                    f"Going to update the capacity from "
+                    f"{current_installed_capacity} to {new_installed_capacity}"
+                )
+                gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
 
             logger.debug(f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}")
 
