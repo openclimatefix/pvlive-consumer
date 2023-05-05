@@ -8,7 +8,7 @@ Plots
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import geopandas as gpd
 import pandas as pd
@@ -31,7 +31,7 @@ v4_gdf = gpd.read_file(dir + file_v4)  # 333
 v3_gdf = v3_gdf.to_crs(4326)
 v4_gdf = v4_gdf.to_crs(4326)
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 # get installed capacity from pv live (this takes ~30 seconds)
 from nowcasting_dataset.data_sources.gsp.pvlive import get_installed_capacity

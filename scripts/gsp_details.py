@@ -12,11 +12,9 @@ import json
 from datetime import datetime, timezone
 
 import boto3
-import pandas as pd
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
-from nowcasting_datamodel.models.gsp import Location
-from nowcasting_datamodel.read.read import get_all_locations, get_location, national_gb_label
+from nowcasting_datamodel.read.read import get_all_locations, get_location
 from nowcasting_dataset.data_sources.gsp.eso import get_gsp_metadata_from_eso
 from pvlive_api import PVLive
 
