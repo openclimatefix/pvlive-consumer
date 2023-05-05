@@ -59,7 +59,6 @@ with connection.get_session() as session:
     locations = get_all_locations(session=session)
 
     for location in locations:
-
         gsp_id = location.gsp_id
         print(gsp_id)
 

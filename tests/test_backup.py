@@ -22,7 +22,6 @@ def add_national_gsp_yields(db_session):
 
 
 def add_gsp_yields(db_session):
-
     gsp_yield_0 = GSPYield(datetime_utc=datetime(2022, 1, 1), solar_generation_kw=1).to_orm()
     gsp_yield_1 = GSPYield(datetime_utc=datetime(2022, 1, 1, 0, 30), solar_generation_kw=2).to_orm()
     gsp_yield_2 = GSPYield(datetime_utc=datetime(2022, 1, 1, 0, 34), solar_generation_kw=3).to_orm()
@@ -44,7 +43,6 @@ def add_gsp_yields(db_session):
 
 
 def test_get_number_gsp_yields_empty(db_session):
-
     start = datetime_utc = datetime(2022, 1, 1, 0, 35, tzinfo=timezone.utc)
     end = datetime_utc = datetime(2022, 1, 2, 0, 35, tzinfo=timezone.utc)
     regime = "in-day"

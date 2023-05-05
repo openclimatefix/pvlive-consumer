@@ -9,7 +9,6 @@ from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
 
 
 def test_get_gsps(db_session):
-
     gsps = get_gsps(session=db_session, n_gsps=10, regime="in-day")
     assert len(gsps) == 11  # (10 + national)
 
@@ -22,7 +21,6 @@ def test_filter_pv_systems_which_have_new_data_no_data(db_session):
 
 
 def test_filter_pv_systems_which_have_new_data(db_session):
-
     gsp_yield_0 = GSPYield(datetime_utc=datetime(2022, 1, 1), solar_generation_kw=1).to_orm()
     gsp_yield_1 = GSPYield(datetime_utc=datetime(2022, 1, 1, 0, 30), solar_generation_kw=2).to_orm()
     gsp_yield_2 = GSPYield(datetime_utc=datetime(2022, 1, 1, 0, 34), solar_generation_kw=3).to_orm()

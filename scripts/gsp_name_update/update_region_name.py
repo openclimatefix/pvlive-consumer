@@ -38,7 +38,6 @@ with connection.get_session() as session:
     # locations = get_all_locations(session=session)
 
     for i, row in data_df.iterrows():
-
         location = get_location(session=session, gsp_id=row.gsp_id_x)
         location.region_name = row.region_name
 

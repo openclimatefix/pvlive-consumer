@@ -39,7 +39,6 @@ with connection.get_session() as session:
     locations = [national_location] + locations
 
     for location in locations:
-
         gsp_id = location.gsp_id
         print(gsp_id)
 
