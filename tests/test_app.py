@@ -129,7 +129,7 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
             "--regime",
             "day-after",
             "--include-national",
-            "false",
+            "true",
         ],
     )
     assert response.exit_code == 0, response.exception
@@ -137,7 +137,7 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 5
+        assert len(gsps) == 6
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
+        assert len(gsp_yields) == 6 * 49  # 5 gsps with 48 half hour settlement periods + midnight
