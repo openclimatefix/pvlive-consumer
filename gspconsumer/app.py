@@ -190,6 +190,7 @@ def pull_data_and_save(
                         f"No new data available after {last_gsp_datetime}. "
                         f"Last data point was {last_gsp_datetime}"
                     )
+                    continue
             else:
                 logger.debug(f"This is the first lot gsp yield data for GSP {(gsp.gsp_id)}")
 
