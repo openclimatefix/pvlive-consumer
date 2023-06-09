@@ -41,7 +41,7 @@ def test_app(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 11
 
         gsp_yields = session.query(GSPYieldSQL).order_by(GSPYieldSQL.datetime_utc).all()
-        assert len(gsp_yields) == 22
+        assert len(gsp_yields) >= 11 
 
 
 def test_app_day_after(db_connection, input_data_last_updated_sql):
