@@ -105,3 +105,39 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
 
         gsp_yields = session.query(GSPYieldSQL).all()
         assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
+
+def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_updated_sql):
+    """
+    First just get National, then get all gsps
+    """
+
+    make_national(db_connection)
+
+    runner = CliRunner()
+    response = runner.invoke(
+        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"]
+    )
+    assert response.exit_code == 0, response.exception
+
+    response = runner.invoke(
+        app,
+        [
+            "--db-url",
+            db_connection.url,
+            "--n-gsps",
+            5,
+            "--regime",
+            "day-after",
+            "--include-national",
+            "false",
+        ],
+    )
+    assert response.exit_code == 0, response.exception
+
+    with db_connection.get_session() as session:
+        gsps = session.query(LocationSQL).all()
+        _ = Location.from_orm(gsps[0])
+        assert len(gsps) == 5
+
+        gsp_yields = session.query(GSPYieldSQL).all()
+        assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
