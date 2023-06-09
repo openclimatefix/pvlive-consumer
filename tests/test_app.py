@@ -106,6 +106,7 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         gsp_yields = session.query(GSPYieldSQL).all()
         assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
 
+
 def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_updated_sql):
     """
     First just get National, then get all gsps
