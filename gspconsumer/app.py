@@ -166,7 +166,7 @@ def pull_data_and_save(
             entity_type="gsp",
             entity_id=gsp.gsp_id,
             dataframe=True,
-            extra_fields="installedcapacity_mwp",
+            extra_fields="installedcapacity_mwp,capacity_mwp,updated_gmt",
         )
 
         logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
@@ -197,8 +197,15 @@ def pull_data_and_save(
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
+            gsp_yield_df["pvlive_updated_utc"] = gsp_yield_df["updated_gmt"]
             gsp_yield_df = gsp_yield_df[
-                ["solar_generation_kw", "datetime_utc", "installedcapacity_mwp"]
+                [
+                    "solar_generation_kw",
+                    "datetime_utc",
+                    "installedcapacity_mwp",
+                    "capacity_mwp",
+                    "pvlive_updated_utc",
+                ]
             ]
             gsp_yield_df["regime"] = regime
 
