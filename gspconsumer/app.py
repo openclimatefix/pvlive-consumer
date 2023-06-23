@@ -199,7 +199,13 @@ def pull_data_and_save(
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
             gsp_yield_df["pvlive_updated_utc"] = gsp_yield_df["updated_gmt"]
             gsp_yield_df = gsp_yield_df[
-                ["solar_generation_kw", "datetime_utc", "installedcapacity_mwp","capacity_mwp","pvlive_updated_utc"]
+                [
+                    "solar_generation_kw",
+                    "datetime_utc",
+                    "installedcapacity_mwp",
+                    "capacity_mwp",
+                    "pvlive_updated_utc",
+                ]
             ]
             gsp_yield_df["regime"] = regime
 

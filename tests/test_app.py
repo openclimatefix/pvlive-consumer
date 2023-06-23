@@ -26,11 +26,11 @@ def test_pull_data(db_session, input_data_last_updated_sql):
     assert len(pv_yields) > 0
     assert pv_yields[0].pvlive_updated_utc != None
     assert pv_yields[0].capacity_mwp != None
-    
+
     gsps = db_session.query(LocationSQL).all()
     assert gsps[0].installed_capacity_mw != 10
 <<<<<<< HEAD
-    
+
 =======
     assert gsps[0].pvlive_updated_utc != None
     assert gsps[0].capacity_mw != None
