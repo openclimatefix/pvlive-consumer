@@ -31,7 +31,6 @@ def test_pull_data(db_session, input_data_last_updated_sql):
     assert gsps[0].installed_capacity_mw != 10
 
 
-
 def test_app(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
