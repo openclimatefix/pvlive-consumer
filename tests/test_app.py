@@ -29,15 +29,7 @@ def test_pull_data(db_session, input_data_last_updated_sql):
 
     gsps = db_session.query(LocationSQL).all()
     assert gsps[0].installed_capacity_mw != 10
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 
-=======
-    assert gsps[0].pvlive_updated_utc != None
-    assert gsps[0].capacity_mw != None
->>>>>>> 7ee6c6fb5b295355a39cb58b0adcd33b5fc7ceb1
->>>>>>> c4486d8e2c1371536a52d07e3c580ba9106ac226
 
 
 def test_app(db_connection, input_data_last_updated_sql):
