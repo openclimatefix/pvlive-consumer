@@ -28,7 +28,6 @@ def test_pull_data(db_session, input_data_last_updated_sql):
     assert gsps[0].installed_capacity_mw != 10
     assert gsps[0].pvlive_updated_utc != None
     assert gsps[0].capacity_mw != None
-    
 
 
 def test_app(db_connection, input_data_last_updated_sql):
