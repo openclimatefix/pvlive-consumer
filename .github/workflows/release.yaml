@@ -6,7 +6,7 @@ on:
 
 jobs:
   bump-version-docker-release:
-    uses: openclimatefix/.github/.github/workflows/docker-release.yml@v1.5.0
+    uses: openclimatefix/.github/.github/workflows/docker-release.yml@v1.6.0
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
