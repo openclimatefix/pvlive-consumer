@@ -8,6 +8,7 @@ Collect GSP solar generation data from PVlive from Sheffield Solar
 
 To the run the appication install this library and run
 ```
+pip install -e .
 python gspconsumer/app.py
 ```
 
