@@ -1,5 +1,8 @@
 name: Bump version and auto-release (docker)
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   bump-version-docker-release:
