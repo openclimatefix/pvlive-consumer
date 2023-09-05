@@ -225,14 +225,15 @@ def pull_data_and_save(
                 gsp_yield_sql.location = gsp
 
             # update installed capacity
-            current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
-            new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
-            if current_installed_capacity != new_installed_capacity:
-                logger.debug(
-                    f"Going to update the capacity from "
-                    f"{current_installed_capacity} to {new_installed_capacity}"
-                )
-                gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
+            if len(gsp_yield_df)>0:
+                current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
+                new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
+                if current_installed_capacity != new_installed_capacity:
+                    logger.debug(
+                        f"Going to update the capacity from "
+                        f"{current_installed_capacity} to {new_installed_capacity}"
+                    )
+                    gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
 
             logger.debug(f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}")
 
