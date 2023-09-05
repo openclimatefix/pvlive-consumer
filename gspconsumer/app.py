@@ -198,7 +198,6 @@ def pull_data_and_save(
             if gsp_yield_df["capacity_mwp"].sum() == 0:
                 gsp_yield_df["generation_mw"] = 0
 
-
             # drop nan value in generation_mw column if not all are nans
             # this gets rid of last value if it is nan
             if not gsp_yield_df["generation_mw"].isnull().all():
@@ -228,7 +227,7 @@ def pull_data_and_save(
                 gsp_yield_sql.location = gsp
 
             # update installed capacity
-            if len(gsp_yield_df)>0:
+            if len(gsp_yield_df) > 0:
                 current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
                 new_installed_capacity = gsp_yield_df["installedcapacity_mwp"].iloc[0]
                 if current_installed_capacity != new_installed_capacity:
