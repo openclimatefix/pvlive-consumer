@@ -196,7 +196,7 @@ def pull_data_and_save(
 
             # drop any nan values in generation_mw column
             gsp_yield_df = gsp_yield_df.dropna(subset=["generation_mw"])
-            
+
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
