@@ -198,8 +198,11 @@ def pull_data_and_save(
             if gsp_yield_df["capacity_mwp"].sum() == 0:
                 gsp_yield_df["generation_mw"] = 0
 
-            # drop any nan values in generation_mw column
-            gsp_yield_df = gsp_yield_df.dropna(subset=["generation_mw"])
+
+            # drop nan value in generation_mw column if not all are nans
+            # this gets rid of last value if it is nan
+            if not gsp_yield_df["generation_mw"].isnull().all():
+                gsp_yield_df = gsp_yield_df.dropna(subset=["generation_mw"])
 
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
