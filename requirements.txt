@@ -1,4 +1,5 @@
 numpy
+pydantic<2.0
 pandas
 pyyaml
 urllib3
