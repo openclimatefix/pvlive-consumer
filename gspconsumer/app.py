@@ -194,6 +194,10 @@ def pull_data_and_save(
             else:
                 logger.debug(f"This is the first lot gsp yield data for GSP {(gsp.gsp_id)}")
 
+            # capacity is zero, set nans to 0
+            if gsp_yield_df["capacity_mwp"].sum() == 0:
+                gsp_yield_df["generation_mw"] = 0
+
             # drop any nan values in generation_mw column
             gsp_yield_df = gsp_yield_df.dropna(subset=["generation_mw"])
 
