@@ -1,4 +1,5 @@
 numpy
+sentry_sdk
 pydantic<2.0
 pandas
 pyyaml
