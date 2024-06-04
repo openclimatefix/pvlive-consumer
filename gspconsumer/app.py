@@ -46,7 +46,8 @@ def traces_sampler(sampling_context):
     else:
         # Default sample rate
         return 0.05
-    
+
+
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
     environment=os.getenv("ENVIRONMENT", "local"),
