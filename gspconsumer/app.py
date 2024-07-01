@@ -205,7 +205,7 @@ def pull_data_and_save(
             # need columns datetime_utc, solar_generation_kw
             gsp_yield_df["solar_generation_kw"] = 1000 * gsp_yield_df["generation_mw"]
             gsp_yield_df["datetime_utc"] = gsp_yield_df["datetime_gmt"]
-            gsp_yield_df["pvlive_updated_utc"] = gsp_yield_df["updated_gmt"]
+            gsp_yield_df["pvlive_updated_utc"] = pd.to_datetime(gsp_yield_df["updated_gmt"])
             gsp_yield_df = gsp_yield_df[
                 [
                     "solar_generation_kw",
