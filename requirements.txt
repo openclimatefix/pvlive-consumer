@@ -1,5 +1,5 @@
-numpy
-pydantic
+numpy>2
+pydantic>2
 pandas
 pyyaml
 urllib3
