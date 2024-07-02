@@ -60,10 +60,10 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == n_gsps+1
+        assert len(gsps) == n_gsps + 1
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == (n_gsps+1) * 49  # (10 +national) gsps with
+        assert len(gsp_yields) == (n_gsps + 1) * 49  # (10 +national) gsps with
         # 8 half hour settlement periods + midnight
 
 
