@@ -22,6 +22,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mduffin95",
+      "name": "Matthew Duffin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6598483?v=4",
+      "profile": "https://github.com/mduffin95",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -29,5 +38,7 @@
   "projectOwner": "openclimatefix",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
