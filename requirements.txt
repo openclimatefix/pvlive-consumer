@@ -1,9 +1,9 @@
-numpy
-pydantic<2.0
+numpy>=2
+pydantic>=2
 pandas
 pyyaml
 urllib3
 requests
-nowcasting_datamodel==1.4.6
+nowcasting_datamodel==1.5.46
 #git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
 click
