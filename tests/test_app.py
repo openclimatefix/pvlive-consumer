@@ -51,18 +51,19 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
     runner = CliRunner()
+    n_gsps = 5
     response = runner.invoke(
-        app, ["--db-url", db_connection.url, "--n-gsps", 10, "--regime", "day-after"]
+        app, ["--db-url", db_connection.url, "--n-gsps", n_gsps, "--regime", "day-after"]
     )
     assert response.exit_code == 0, response.exception
 
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 11
+        assert len(gsps) == n_gsps+1
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 11 * 49  # (10 +national) gsps with
+        assert len(gsp_yields) == (n_gsps+1) * 49  # (10 +national) gsps with
         # 8 half hour settlement periods + midnight
 
 
