@@ -1,6 +1,8 @@
 name: Test Docker image
 on:
   push:
+  pull_request:
+    types: [opened, reopened]
   schedule:
     - cron: "0 12 * * 1"
 
@@ -30,4 +32,4 @@ jobs:
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v2
         with:
-          fail_ci_if_error: true
+          fail_ci_if_error: false
