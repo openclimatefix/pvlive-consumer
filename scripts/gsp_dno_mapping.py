@@ -43,7 +43,7 @@ def join_two_rows_together(x, y, gdf):
         gdf.loc[gdf.index == x.name, "geometry"] = geom.geometry
         gdf.loc[gdf.index == x.name, "gsp_ids"] += "," + str(y.gsp_id)
         gdf.loc[gdf.index == x.name, "installed_capacity_mw"] += y.installed_capacity_mw
-        
+
         # drop row
         print(f"dropping {y.name}")
         gdf = gdf.drop(y.name)
@@ -73,8 +73,8 @@ for i in range(1, len(shape_gpd)):
         j = j + 1
 
 # save to csv
-gsp = shape_gpd[['GSPGroup','gsp_ids',"installed_capacity_mw"]]
-gsp.to_csv('gsp_dno_mapping.csv',index=False)
+gsp = shape_gpd[["GSPGroup", "gsp_ids", "installed_capacity_mw"]]
+gsp.to_csv("gsp_dno_mapping.csv", index=False)
 
 # lets plot it
 shape_gpd.reset_index(inplace=True, drop=True)
@@ -86,7 +86,8 @@ fig.add_trace(
     go.Choroplethmapbox(
         geojson=shapes_dict,
         locations=shape_gpd.index.values,
-        z=shape_gpd['installed_capacity_mw'].values, colorscale="Viridis",
+        z=shape_gpd["installed_capacity_mw"].values,
+        colorscale="Viridis",
     )
 )
 
@@ -95,5 +96,4 @@ fig.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 30})
 fig.show(renderer="browser")
 
 # save html
-fig.write_html('gsp_dno_mapping.html')
-
+fig.write_html("gsp_dno_mapping.html")
