@@ -1,27 +1,28 @@
 """ to make gsp to dno mappings """
 
-import pandas as pd
-import geopandas as gpd
-import requests
-import os
 import json
+import os
+
+import geopandas as gpd
+import pandas as pd
 import plotly.graph_objects as go
+import requests
 
 # load gsp files
 url = (
-            "https://data.nationalgrideso.com/backend/dataset/2810092e-d4b2-472f-b955-d8bea01f9ec0/"
-            "resource/08534dae-5408-4e31-8639-b579c8f1c50b/download/gsp_regions_20220314.geojson"
-        )
+    "https://data.nationalgrideso.com/backend/dataset/2810092e-d4b2-472f-b955-d8bea01f9ec0/"
+    "resource/08534dae-5408-4e31-8639-b579c8f1c50b/download/gsp_regions_20220314.geojson"
+)
 
 response = requests.get(url)
 shape_gpd = gpd.read_file(response.text)
 
 # load gsp files from database
-url = os.getenv('DB_URL')
-gsp = pd.read_sql('select * from location order by gsp_id', url)
+url = os.getenv("DB_URL")
+gsp = pd.read_sql("select * from location order by gsp_id", url)
 
-shape_gpd['gsp_name'] = shape_gpd['GSPs']
-shape_gpd = shape_gpd.merge(gsp, on='gsp_name', how='left')
+shape_gpd["gsp_name"] = shape_gpd["GSPs"]
+shape_gpd = shape_gpd.merge(gsp, on="gsp_name", how="left")
 
 # GSPGROUP name, I think is DNO
 
@@ -30,47 +31,46 @@ shape_gpd = shape_gpd.merge(gsp, on='gsp_name', how='left')
 # dno_shapes = gpd.read_file(url)
 
 # sort by gsp mapping
-shape_gpd.sort_values('GSPGroup', inplace=True)
+shape_gpd.sort_values("GSPGroup", inplace=True)
+
 
 # group by GSPGroup
-def join_two_rows_together(x,y, gdf):
-    
+def join_two_rows_together(x, y, gdf):
     if x.GSPGroup == y.GSPGroup:
-    
         gdf = gdf.copy()
         geom = x.geometry.union(y.geometry)
         geom = gpd.GeoSeries(geom, index=[x.name])
-        gdf.loc[gdf.index == x.name,"geometry"] = geom.geometry
+        gdf.loc[gdf.index == x.name, "geometry"] = geom.geometry
         gdf.loc[gdf.index == x.name, "gsp_ids"] += "," + str(y.gsp_id)
         gdf.loc[gdf.index == x.name, "installed_capacity_mw"] += y.installed_capacity_mw
         
         # drop row
-        print(f'dropping {y.name}')
+        print(f"dropping {y.name}")
         gdf = gdf.drop(y.name)
-        
-        drop=True
-        
+
+        drop = True
+
     else:
-        print(f'skipping {x.GSPGroup} and {y.GSPGroup} as they are different')
-        drop=False
-    
+        print(f"skipping {x.GSPGroup} and {y.GSPGroup} as they are different")
+        drop = False
 
     return gdf.copy(), drop
+
 
 # shape_gpd_all = shape_gpd
 # shape_gpd = shape_gpd_all
 shape_gpd.reset_index(inplace=True)
-j=0
-shape_gpd['gsp_ids'] = shape_gpd['gsp_id'].astype(str)
-for i in range(1,len(shape_gpd)):
-    print(j,i)
-    
+j = 0
+shape_gpd["gsp_ids"] = shape_gpd["gsp_id"].astype(str)
+for i in range(1, len(shape_gpd)):
+    print(j, i)
+
     x = shape_gpd.iloc[j]
-    y = shape_gpd.iloc[j+1]
-    
-    shape_gpd, drop = join_two_rows_together(x,y,shape_gpd)
+    y = shape_gpd.iloc[j + 1]
+
+    shape_gpd, drop = join_two_rows_together(x, y, shape_gpd)
     if not drop:
-        j=j+1
+        j = j + 1
 
 # save to csv
 gsp = shape_gpd[['GSPGroup','gsp_ids',"installed_capacity_mw"]]
@@ -96,3 +96,4 @@ fig.show(renderer="browser")
 
 # save html
 fig.write_html('gsp_dno_mapping.html')
+
