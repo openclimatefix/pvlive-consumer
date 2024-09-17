@@ -6,6 +6,7 @@ from gspconsumer.app import app, pull_data_and_save
 
 from freezegun import freeze_time
 
+
 def make_national(db_connection):
     gsps = [
         Location(gsp_id=0, label=national_gb_label, installed_capacity_mw=10).to_orm(),
