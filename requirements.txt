@@ -5,5 +5,6 @@ pyyaml
 urllib3
 requests
 nowcasting_datamodel==1.5.46
+sentry-sdk==2.13.0
 #git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
 click

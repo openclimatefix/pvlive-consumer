@@ -13,6 +13,7 @@ from typing import List, Optional
 
 import click
 import pandas as pd
+import sentry_sdk
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
@@ -29,6 +30,13 @@ logging.basicConfig(
     format="[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"), environment=os.getenv("ENVIRONMENT", "local"), traces_sample_rate=1
+)
+
+sentry_sdk.set_tag("app_name", "GSP_consumer")
+sentry_sdk.set_tag("version", gspconsumer.__version__)
 
 
 @click.command()
