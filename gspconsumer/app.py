@@ -147,7 +147,7 @@ def pull_data_and_save(
     """
 
     pvlive = PVLive()
-    pvlive.base_url = "https://api0.solar.sheffield.ac.uk/pvlive/api/v4/"
+    pvlive.base_url = "https://api.pvlive.uk/pvlive/api/v4/"
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
