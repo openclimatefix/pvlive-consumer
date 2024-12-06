@@ -12,17 +12,27 @@ python gspconsumer/app.py
 ```
 
 The environmental variables are
-DB_URL: The natabase url you want to save the results to
-REGIME: Regime of which to pull, either 'in-day' or 'day-after'
-N_GSPS: The number of gsps you want to pull
-INCLUDE_NATIONAL: Option to load national data, or not
-UK_LONDON_HOUR: Optional to check UK London hour. This means can run this service at the same
+- DB_URL: The natabase url you want to save the results to
+- REGIME: Regime of which to pull, either 'in-day' or 'day-after'
+- N_GSPS: The number of gsps you want to pull
+- INCLUDE_NATIONAL: Option to load national data, or not
+- UK_LONDON_HOUR: Optional to check UK London hour. This means can run this service at the same
    UTC times, independently of the clock change.
-BACKFILL_HOURS: Optional, defaults to 2. The amount of hours of data that is backfilled.
+- BACKFILL_HOURS: Optional, defaults to 2. The amount of hours of data that is backfilled.
+- ELEVATION_LIMIT: Optional, defaults to 5. If no PVLive values are found, and sun elevation is below this, then the values are set to 0
 
 These options can also be enter like this:
 ```
 python gspconsumer/app.py --n-gsps=10
+```
+
+## Tests
+
+To run tests use the following command
+```bash
+docker stop $(docker ps -a -q)
+docker-compose -f test-docker-compose.yml build
+docker-compose -f test-docker-compose.yml run gspconsumer
 ```
 
 ## Contributors ✨
