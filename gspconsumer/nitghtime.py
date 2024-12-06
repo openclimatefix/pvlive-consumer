@@ -1,3 +1,4 @@
+""" Add zeros to nightime """
 import pandas as pd
 import pvlib
 import os
