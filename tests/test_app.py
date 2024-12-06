@@ -35,6 +35,8 @@ def test_pull_data(db_session, input_data_last_updated_sql):
 
 
 tomorrow_date = (datetime.today() + timedelta(days=1)).date()
+
+
 @freeze_time(tomorrow_date)
 def test_pull_data_night_time(db_session):
     gsps = [
