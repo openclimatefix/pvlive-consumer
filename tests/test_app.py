@@ -106,7 +106,10 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
         gsp_yields = session.query(GSPYieldSQL).all()
         assert len(gsp_yields) == 1 * 49  # 1 gsps with 48 half hour settlement periods + midnight
 
+
 tomorrow_date = (datetime.today() + timedelta(days=1)).date()
+
+
 @freeze_time(tomorrow_date)
 def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
     runner = CliRunner()
