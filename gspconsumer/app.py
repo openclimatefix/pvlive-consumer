@@ -193,6 +193,10 @@ def pull_data_and_save(
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")
         else:
+            
+            # add timezone
+            gsp_yield_df["datetime_gmt"] = gsp_yield_df["datetime_gmt"].dt.tz_localize("UTC")
+            
             # filter by datetime
             gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] >= start]
             gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] < end]
