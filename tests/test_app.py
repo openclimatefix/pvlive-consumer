@@ -50,8 +50,6 @@ def test_pull_data_night_time(db_session):
     assert pv_yields[0].solar_generation_kw == 0
 
 
-
-
 def test_app(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
