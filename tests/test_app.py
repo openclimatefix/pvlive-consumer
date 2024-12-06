@@ -34,8 +34,8 @@ def test_pull_data(db_session, input_data_last_updated_sql):
     assert gsps[0].installed_capacity_mw != 10
 
 
-# need to make this tomorrows date
-@freeze_time("2024-12-07 02:00:00")
+tomorrow_date = (datetime.today() + timedelta(days=1)).date()
+@freeze_time(tomorrow_date)
 def test_pull_data_night_time(db_session):
     gsps = [
         Location(gsp_id=1, label="GSP_1", installed_capacity_mw=10).to_orm(),
@@ -107,10 +107,7 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
         assert len(gsp_yields) == 1 * 49  # 1 gsps with 48 half hour settlement periods + midnight
 
 
-tomorrow_date = (datetime.today() + timedelta(days=1)).date()
-
-
-@freeze_time(tomorrow_date)
+@freeze_time("2024-09-16 12:00:00")
 def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
     runner = CliRunner()
     response = runner.invoke(
@@ -134,6 +131,8 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
+        for gsp in gsp_yields:
+            print(gsp.__dict__)
         assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
 
 
