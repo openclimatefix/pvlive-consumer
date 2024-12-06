@@ -9,6 +9,8 @@ from nowcasting_datamodel.models.gsp import LocationSQL
 
 logger = logging.getLogger(__name__)
 
+# the elevation limit for night time, decided to go for 5 degrees, as almost all
+# solar panels will have zero production when the sun is at this elevation
 elevation_limit = os.getenv("ELEVATION_LIMIT", 5)
 
 # get lat and longs of the gsps
