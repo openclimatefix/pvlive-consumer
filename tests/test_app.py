@@ -33,6 +33,25 @@ def test_pull_data(db_session, input_data_last_updated_sql):
     assert gsps[0].installed_capacity_mw != 10
 
 
+# need to make this tomorrows date
+@freeze_time("2024-12-07 02:00:00")
+def test_pull_data_night_time(db_session):
+    gsps = [
+        Location(gsp_id=1, label="GSP_1", installed_capacity_mw=10).to_orm(),
+    ]
+    gsps[0].last_gsp_yield = None
+
+    pull_data_and_save(gsps=gsps, session=db_session)
+
+    pv_yields = db_session.query(GSPYieldSQL).all()
+    assert len(pv_yields) > 0
+    assert pv_yields[0].pvlive_updated_utc != None
+    assert pv_yields[0].capacity_mwp != None
+    assert pv_yields[0].solar_generation_kw == 0
+
+
+
+
 def test_app(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
