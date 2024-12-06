@@ -23,6 +23,7 @@ from sqlalchemy.orm import Session
 import gspconsumer
 from gspconsumer.backup import make_gsp_yields_from_national
 from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
+from gspconsumer.nitghtime import make_night_time_zeros
 from gspconsumer.time import check_uk_london_hour
 
 logging.basicConfig(
@@ -180,6 +181,14 @@ def pull_data_and_save(
         logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
 
         logger.debug(f"Got {len(gsp_yield_df)} gsp yield for gsp id {gsp.gsp_id} before filtering")
+
+        if len(gsp_yield_df) == 0:
+            logger.warning(
+                f"Did not find any data for {gsp.gsp_id} for {start} to {end}. "
+                f"Will try adding some nighttime zeros"
+            )
+
+            gsp_yield_df = make_night_time_zeros(start, end, gsp, gsp_yield_df, regime)
 
         if len(gsp_yield_df) == 0:
             logger.warning(f"Did not find any data for {gsp.gsp_id} for {start} to {end}")

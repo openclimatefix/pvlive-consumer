@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+from datetime import datetime, timedelta
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 from nowcasting_datamodel.models.models import national_gb_label
 
@@ -31,6 +32,25 @@ def test_pull_data(db_session, input_data_last_updated_sql):
 
     gsps = db_session.query(LocationSQL).all()
     assert gsps[0].installed_capacity_mw != 10
+
+
+tomorrow_date = (datetime.today() + timedelta(days=1)).date()
+
+
+@freeze_time(tomorrow_date)
+def test_pull_data_night_time(db_session):
+    gsps = [
+        Location(gsp_id=1, label="GSP_1", installed_capacity_mw=10).to_orm(),
+    ]
+    gsps[0].last_gsp_yield = None
+
+    pull_data_and_save(gsps=gsps, session=db_session)
+
+    pv_yields = db_session.query(GSPYieldSQL).all()
+    assert len(pv_yields) > 0
+    assert pv_yields[0].pvlive_updated_utc != None
+    assert pv_yields[0].capacity_mwp != None
+    assert pv_yields[0].solar_generation_kw == 0
 
 
 def test_app(db_connection, input_data_last_updated_sql):
@@ -113,6 +133,8 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
+        for gsp in gsp_yields:
+            print(gsp.__dict__)
         assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
 
 
