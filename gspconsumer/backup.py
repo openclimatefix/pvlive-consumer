@@ -108,7 +108,7 @@ def make_gsp_yields_from_national(
                     datetime_utc=national_gsp_yield.datetime_utc,
                     solar_generation_kw=national_gsp_yield.solar_generation_kw * factor,
                     regime=national_gsp_yield.regime,
-                    capacity_mwp=nlocation.installed_capacity_mw,
+                    capacity_mwp=location.installed_capacity_mw,
                     pvlive_updated_utc=national_gsp_yield.pvlive_updated_utc,
                 )
                 gsp_yield.location = location
