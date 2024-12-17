@@ -132,6 +132,22 @@ def app(
         pull_data_and_save(gsps=gsps, session=session, regime=regime)
 
 
+class PVLiveNew(PVLive):
+    def __int__(self, retries: int = 3, proxies: Optional[Dict] = None, ssl_verify: bool = True):
+        self.domain_url = "https://api.pvlive.uk"
+        self.base_url = f"{self.domain_url}/pvlive/api/v4"
+        self.max_range = {"national": timedelta(days=365), "regional": timedelta(days=30)}
+        self.retries = retries
+        self.proxies = proxies
+        self.ssl_verify = ssl_verify
+        self.timeout = 30
+        self.gsp_list = self._get_gsp_list()
+        self.pes_list = self._get_pes_list()
+        self.gsp_ids = self.gsp_list.gsp_id.dropna().astype(int64).unique()
+        self.pes_ids = self.pes_list.pes_id.dropna().astype(int64).unique()
+        self.deployment_releases = None
+
+
 def pull_data_and_save(
     gsps: List[LocationSQL],
     session: Session,
@@ -147,8 +163,8 @@ def pull_data_and_save(
     :param datetime_utc: datetime now, this is optional
     """
 
-    pvlive = PVLive()
-    pvlive.base_url = "https://api.pvlive.uk/pvlive/api/v4/"
+
+    pvlive = PVLiveNew()
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
