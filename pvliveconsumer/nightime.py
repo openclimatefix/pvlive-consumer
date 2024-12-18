@@ -1,7 +1,7 @@
 """ Add zeros to nightime """
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 import pvlib
@@ -44,6 +44,15 @@ def make_night_time_zeros(
     gsp_location = gsp_locations.loc[gsp.gsp_id]
     longitude = gsp_location["longitude"]
     latitude = gsp_location["latitude"]
+
+    # round start up to the nearest half hour
+    start = start.replace(microsecond=0)
+    if start.minute == 0 and start.second == 0:
+        pass
+    elif start.minute < 30 or (start.minute == 30 and start.second == 0):
+        start = start.replace(minute=30, second=0, microsecond=0)
+    else:
+        start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
 
     times = pd.date_range(start=start, end=end, freq="30min")
     # check if it is nighttime, and if so, set generation values to zero

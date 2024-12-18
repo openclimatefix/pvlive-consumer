@@ -23,7 +23,7 @@ from sqlalchemy.orm import Session
 import pvliveconsumer
 from pvliveconsumer.backup import make_gsp_yields_from_national
 from pvliveconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
-from pvliveconsumer.nitghtime import make_night_time_zeros
+from pvliveconsumer.nightime import make_night_time_zeros
 from pvliveconsumer.time import check_uk_london_hour
 
 logging.basicConfig(
@@ -147,8 +147,7 @@ def pull_data_and_save(
     :param datetime_utc: datetime now, this is optional
     """
 
-    pvlive = PVLive()
-    pvlive.base_url = "https://api.pvlive.uk/pvlive/api/v4/"
+    pvlive = PVLive(domain_url="api.pvlive.uk")
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone

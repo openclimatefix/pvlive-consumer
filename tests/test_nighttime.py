@@ -1,4 +1,4 @@
-from pvliveconsumer.nitghtime import make_night_time_zeros
+from pvliveconsumer.nightime import make_night_time_zeros
 from datetime import datetime
 from nowcasting_datamodel.models.gsp import LocationSQL, GSPYieldSQL
 import pandas as pd
