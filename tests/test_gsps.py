@@ -5,7 +5,7 @@ from typing import List
 from nowcasting_datamodel.models.gsp import GSPYield, Location, LocationSQL
 from nowcasting_datamodel.read.read_gsp import get_latest_gsp_yield
 
-from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
+from pvliveconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
 
 
 def test_get_gsps(db_session):

@@ -8,12 +8,12 @@ import os
 import geopandas as gpd
 import plotly.graph_objects as go
 
-import gspconsumer
+import pvliveconsumer
 
 file_v3 = "data/gsp_regions_20181031.geojson"
 file_v4 = "data/gsp_regions_20220314.geojson"
 
-dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
+dir = os.path.dirname(pvliveconsumer.__file__) + "/../scripts/v3_to_v4/"
 
 v3_gdf = gpd.read_file(dir + file_v3)  # 329
 v4_gdf = gpd.read_file(dir + file_v4)  # 333

@@ -5,7 +5,7 @@ from typing import List
 from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, Location, LocationSQL
 from nowcasting_datamodel.read.read_gsp import get_latest_gsp_yield
 
-from gspconsumer.backup import get_number_gsp_yields, make_gsp_yields_from_national
+from pvliveconsumer.backup import get_number_gsp_yields, make_gsp_yields_from_national
 
 
 def add_national_gsp_yields(db_session):

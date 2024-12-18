@@ -8,7 +8,7 @@ Collect GSP solar generation data from PVlive from Sheffield Solar
 
 To the run the appication install this library and run
 ```
-python gspconsumer/app.py
+python pvliveconsumer/app.py
 ```
 
 The environmental variables are
@@ -23,7 +23,7 @@ The environmental variables are
 
 These options can also be enter like this:
 ```
-python gspconsumer/app.py --n-gsps=10
+python pvliveconsumer/app.py --n-gsps=10
 ```
 
 ## Tests
@@ -32,7 +32,7 @@ To run tests use the following command
 ```bash
 docker stop $(docker ps -a -q)
 docker-compose -f test-docker-compose.yml build
-docker-compose -f test-docker-compose.yml run gspconsumer
+docker-compose -f test-docker-compose.yml run pvliveconsumer
 ```
 
 ## Contributors ✨

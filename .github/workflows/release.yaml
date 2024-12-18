@@ -12,5 +12,5 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
     with:
-      image_base_name: gspconsumer
+      image_base_name: pvliveconsumer
       docker_file: infrastructure/docker/Dockerfile

@@ -18,12 +18,12 @@ from nowcasting_dataset.data_sources.gsp.eso import get_gsp_metadata_from_eso
 # get installed capacity from pv live (this takes ~30 seconds)
 from nowcasting_dataset.data_sources.gsp.pvlive import get_installed_capacity
 
-import gspconsumer
+import pvliveconsumer
 
 file_v3 = "data/gsp_regions_20181031.geojson"
 file_v4 = "data/gsp_regions_20220314.geojson"
 
-dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
+dir = os.path.dirname(pvliveconsumer.__file__) + "/../scripts/v3_to_v4/"
 
 # load data
 v3_gdf = gpd.read_file(dir + file_v3)  # 329

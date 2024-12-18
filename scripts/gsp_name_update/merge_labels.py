@@ -4,11 +4,11 @@
 import pandas as pd
 
 # importing file with new ids
-new_df = pd.read_csv("GSPConsumer/gsp_name_update/gsp_new_ids.csv")
+new_df = pd.read_csv("pvliveconsumer/gsp_name_update/gsp_new_ids.csv")
 print(new_df.head())
 
 # importing file with old ids
-old_df = pd.read_csv("GSPConsumer/gsp_name_update/gsp_old_ids.csv")
+old_df = pd.read_csv("pvliveconsumer/gsp_name_update/gsp_old_ids.csv")
 print(old_df.head())
 
 
@@ -22,7 +22,7 @@ joined_df.drop_duplicates(subset=["gsp_id_x"], keep="first", inplace=True)
 print("subset removed")
 
 
-joined_df.to_csv("GSPConsumer/gsp_name_update/gsp_new_ids_and_names.csv")
+joined_df.to_csv("pvliveconsumer/gsp_name_update/gsp_new_ids_and_names.csv")
 print(joined_df.head())
 
 

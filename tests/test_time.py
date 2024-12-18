@@ -1,7 +1,7 @@
 import pytest
 from freezegun import freeze_time
 
-from gspconsumer.time import check_uk_london_hour
+from pvliveconsumer.time import check_uk_london_hour
 
 
 def test_time_none():

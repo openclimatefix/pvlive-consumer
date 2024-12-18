@@ -15,7 +15,7 @@ from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.read.read import get_location
 
-import gspconsumer
+import pvliveconsumer
 
 # laod database secret from AWS secrets
 client = boto3.client("secretsmanager")
@@ -30,7 +30,7 @@ db_url = f'postgresql://{secret["username"]}:{secret["password"]}@localhost:5433
 connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 # load new region names
-folder = os.path.dirname(gspconsumer.__file__) + "/../gsp_name_update"
+folder = os.path.dirname(pvliveconsumer.__file__) + "/../gsp_name_update"
 data_df = pd.read_csv(f"{folder}/gsp_new_ids_and_names-edited.csv")
 # this has columns 'gsp_id' and 'region_name'
 
