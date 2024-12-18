@@ -147,8 +147,7 @@ def pull_data_and_save(
     :param datetime_utc: datetime now, this is optional
     """
 
-    pvlive = PVLive()
-    pvlive.base_url = "https://api.pvlive.uk/pvlive/api/v4/"
+    pvlive = PVLive(domain_url="api.pvlive.uk")
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
