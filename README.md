@@ -1,6 +1,6 @@
 # PVLiveConsumer
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 Collect GSP solar generation data from PVlive from Sheffield Solar
 
@@ -48,6 +48,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rachel-labri-tipton"><img src="https://avatars.githubusercontent.com/u/86949265?v=4?s=100" width="100px;" alt="rachel tipton"/><br /><sub><b>rachel tipton</b></sub></a><br /><a href="https://github.com/openclimatefix/pvlive-consumer/commits?author=rachel-labri-tipton" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/peterdudfield"><img src="https://avatars.githubusercontent.com/u/34686298?v=4?s=100" width="100px;" alt="Peter Dudfield"/><br /><sub><b>Peter Dudfield</b></sub></a><br /><a href="https://github.com/openclimatefix/pvlive-consumer/commits?author=peterdudfield" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mduffin95"><img src="https://avatars.githubusercontent.com/u/6598483?v=4?s=100" width="100px;" alt="Matthew Duffin"/><br /><sub><b>Matthew Duffin</b></sub></a><br /><a href="https://github.com/openclimatefix/pvlive-consumer/commits?author=mduffin95" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.wemofy.in"><img src="https://avatars.githubusercontent.com/u/120705327?v=4?s=100" width="100px;" alt="Akshay Waghmare"/><br /><sub><b>Akshay Waghmare</b></sub></a><br /><a href="https://github.com/openclimatefix/pvlive-consumer/commits?author=akshayw1" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
