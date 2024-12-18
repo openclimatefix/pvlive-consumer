@@ -45,7 +45,10 @@ def make_night_time_zeros(
     latitude = gsp_location["latitude"]
 
     # round start up to the nearest half hour
-    if start.minute < 30 or (start.minute == 30 and start.second == 0):
+    start = start.replace(microsecond=0)
+    if (start.minute == 0 and start.second == 0):
+        pass
+    elif start.minute < 30 or (start.minute == 30 and start.second == 0):
         start = start.replace(minute=30, second=0, microsecond=0)
     else:
         start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
