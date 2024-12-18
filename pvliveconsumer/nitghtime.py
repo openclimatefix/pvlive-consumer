@@ -45,6 +45,12 @@ def make_night_time_zeros(
     longitude = gsp_location["longitude"]
     latitude = gsp_location["latitude"]
 
+    # round start up to the nearest half hour
+    if start.minute >= 30:
+        start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+    else:
+        start = start.replace(minute=30, second=0, microsecond=0)
+
     times = pd.date_range(start=start, end=end, freq="30min")
     # check if it is nighttime, and if so, set generation values to zero
     solpos = pvlib.solarposition.get_solarposition(
