@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 from nowcasting_datamodel.models.models import national_gb_label
 
-from gspconsumer.app import app, pull_data_and_save
+from pvliveconsumer.app import app, pull_data_and_save
 
 from freezegun import freeze_time
 

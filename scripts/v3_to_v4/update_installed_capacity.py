@@ -12,7 +12,7 @@ from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.read.read import get_all_locations
 
-import gspconsumer
+import pvliveconsumer
 
 # get db connection from database
 client = boto3.client("secretsmanager")
@@ -26,7 +26,7 @@ connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 # get installed cpapacity from file
 file = "data/pv_capacity_by_20220314_GSP.csv"
-dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
+dir = os.path.dirname(pvliveconsumer.__file__) + "/../scripts/v3_to_v4/"
 installed_capacity = pd.read_csv(f"{dir}/{file}")
 
 # gsps names
@@ -39,7 +39,7 @@ gsps["GSPs"] = gsps["gsp_name"]
 
 # get installed cpapacity from file
 file = "data/pv_capacity_by_20220314_GSP.csv"
-dir = os.path.dirname(gspconsumer.__file__) + "/../scripts/v3_to_v4/"
+dir = os.path.dirname(pvliveconsumer.__file__) + "/../scripts/v3_to_v4/"
 installed_capacity = pd.read_csv(f"{dir}/{file}")
 
 # add national

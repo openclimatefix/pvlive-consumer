@@ -20,11 +20,11 @@ from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
 from pvlive_api import PVLive
 from sqlalchemy.orm import Session
 
-import gspconsumer
-from gspconsumer.backup import make_gsp_yields_from_national
-from gspconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
-from gspconsumer.nitghtime import make_night_time_zeros
-from gspconsumer.time import check_uk_london_hour
+import pvliveconsumer
+from pvliveconsumer.backup import make_gsp_yields_from_national
+from pvliveconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
+from pvliveconsumer.nitghtime import make_night_time_zeros
+from pvliveconsumer.time import check_uk_london_hour
 
 logging.basicConfig(
     level=getattr(logging, os.getenv("LOGLEVEL", "DEBUG")),
@@ -37,7 +37,7 @@ sentry_sdk.init(
 )
 
 sentry_sdk.set_tag("app_name", "GSP_consumer")
-sentry_sdk.set_tag("version", gspconsumer.__version__)
+sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
 
 @click.command()
@@ -95,7 +95,7 @@ def app(
         This is to solve clock change issues when running with cron in UTC.
     """
 
-    logger.info(f"Running GSP Consumer app ({gspconsumer.__version__}) for regime {regime}")
+    logger.info(f"Running GSP Consumer app ({pvliveconsumer.__version__}) for regime {regime}")
 
     if uk_london_time_hour is not None:
         check_uk_london_hour(hour=int(uk_london_time_hour))

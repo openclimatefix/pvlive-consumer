@@ -17,7 +17,7 @@ RUN pip install -r app/requirements.txt
 Run pip install git+https://github.com/SheffieldSolar/PV_Live-API#pvlive_api
 
 # copy library files
-COPY gspconsumer/ app/gspconsumer/
+COPY pvliveconsumer/ app/pvliveconsumer/
 COPY tests/ app/tests/
 
 # change to app folder
@@ -28,4 +28,4 @@ RUN pip install -e .
 
 RUN if [ "$TESTING" = 1 ]; then pip install pytest pytest-cov coverage; fi
 
-CMD ["python", "-u","gspconsumer/app.py"]
+CMD ["python", "-u","pvliveconsumer/app.py"]

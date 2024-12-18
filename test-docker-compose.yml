@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
 
-  gspconsumer:
+  pvliveconsumer:
     build:
       context: .
       dockerfile: infrastructure/docker/Dockerfile
@@ -23,7 +23,7 @@ services:
       - SYSTEM_ID=$SYSTEM_ID
       - DATA_SERVICE_URL=https://pvoutput.org/
     command: >
-      bash -c "pytest --cov=./gspconsumer
+      bash -c "pytest --cov=./pvliveconsumer
       && coverage report -m
       && coverage xml
       && cp .coverage ./tests/
@@ -32,4 +32,4 @@ services:
       - "postgres"
     volumes:
       - ./tests/:/app/tests
-      - ./gspconsumer/:/app/gspconsumer
+      - ./pvliveconsumer/:/app/pvliveconsumer
