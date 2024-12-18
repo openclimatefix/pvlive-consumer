@@ -23,7 +23,7 @@ from sqlalchemy.orm import Session
 import pvliveconsumer
 from pvliveconsumer.backup import make_gsp_yields_from_national
 from pvliveconsumer.gsps import filter_gsps_which_have_new_data, get_gsps
-from pvliveconsumer.nitghtime import make_night_time_zeros
+from pvliveconsumer.nightime import make_night_time_zeros
 from pvliveconsumer.time import check_uk_london_hour
 
 logging.basicConfig(

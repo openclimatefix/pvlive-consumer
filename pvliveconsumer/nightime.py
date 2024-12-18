@@ -46,10 +46,10 @@ def make_night_time_zeros(
     latitude = gsp_location["latitude"]
 
     # round start up to the nearest half hour
-    if start.minute >= 30:
-        start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
-    else:
+    if start.minute < 30 or (start.minute == 30 and start.second == 0):
         start = start.replace(minute=30, second=0, microsecond=0)
+    else:
+        start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
 
     times = pd.date_range(start=start, end=end, freq="30min")
     # check if it is nighttime, and if so, set generation values to zero
