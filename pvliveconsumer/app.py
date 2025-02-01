@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 import click
+import numpy as np
 import pandas as pd
 import sentry_sdk
 from nowcasting_datamodel.connection import DatabaseConnection
@@ -247,11 +248,18 @@ def pull_data_and_save(
                 current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
                 new_installed_capacity = float(gsp_yield_df["installedcapacity_mwp"].iloc[0])
                 if current_installed_capacity != new_installed_capacity:
-                    logger.debug(
-                        f"Going to update the capacity from "
-                        f"{current_installed_capacity} to {new_installed_capacity}"
-                    )
-                    gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
+
+                    # dont update if new_installed_capacity is nan
+                    if np.isnan(new_installed_capacity):
+                        logger.debug(
+                            f"New installed capacity is nan, will not update the capacity"
+                        )
+                    else:
+                        logger.debug(
+                            f"Going to update the capacity from "
+                            f"{current_installed_capacity} to {new_installed_capacity}"
+                        )
+                        gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
 
             logger.debug(f"Found {len(gsp_yields_sql)} gsp yield for GSPs {gsp.gsp_id}")
 
