@@ -248,12 +248,9 @@ def pull_data_and_save(
                 current_installed_capacity = gsp_yield_sql.location.installed_capacity_mw
                 new_installed_capacity = float(gsp_yield_df["installedcapacity_mwp"].iloc[0])
                 if current_installed_capacity != new_installed_capacity:
-
                     # dont update if new_installed_capacity is nan
                     if np.isnan(new_installed_capacity):
-                        logger.debug(
-                            f"New installed capacity is nan, will not update the capacity"
-                        )
+                        logger.debug("New installed capacity is nan, will not update the capacity")
                     else:
                         logger.debug(
                             f"Going to update the capacity from "
