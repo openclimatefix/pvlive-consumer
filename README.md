@@ -20,6 +20,7 @@ The environmental variables are
    UTC times, independently of the clock change.
 - BACKFILL_HOURS: Optional, defaults to 2. The amount of hours of data that is backfilled.
 - ELEVATION_LIMIT: Optional, defaults to 5. If no PVLive values are found, and sun elevation is below this, then the values are set to 0
+- PVLIVE_DOMAIN_URL: Optional, defaults to 'https://www.pvlive.org.uk'. The domain of the PVLive API. 
 
 These options can also be enter like this:
 ```
