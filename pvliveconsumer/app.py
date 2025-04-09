@@ -40,6 +40,8 @@ sentry_sdk.init(
 sentry_sdk.set_tag("app_name", "GSP_consumer")
 sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
+pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
+
 
 @click.command()
 @click.option(
@@ -148,7 +150,7 @@ def pull_data_and_save(
     :param datetime_utc: datetime now, this is optional
     """
 
-    pvlive = PVLive(domain_url="api.pvlive.uk")
+    pvlive = PVLive(domain_url=pvlive_domain_url)
 
     if datetime_utc is None:
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
