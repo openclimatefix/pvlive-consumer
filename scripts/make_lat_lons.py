@@ -6,7 +6,6 @@ import zipfile
 import geopandas as gpd
 import pandas as pd
 import requests
-
 from pvlive_api import PVLive
 
 # download zip file from the web
