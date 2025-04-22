@@ -83,7 +83,7 @@ pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
 def app(
     db_url: str,
     regime: str = "in-day",
-    n_gsps: int = 317,
+    n_gsps: int = 342,
     include_national: bool = True,
     uk_london_time_hour: Optional[int] = None,
 ):
