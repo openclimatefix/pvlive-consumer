@@ -7,6 +7,8 @@ import geopandas as gpd
 import pandas as pd
 import requests
 
+from pvlive_api import PVLive
+
 # download zip file from the web
 zip_file_url = "https://api.neso.energy/dataset/2810092e-d4b2-472f-b955-d8bea01f9ec0/resource/d95e8c1b-9cd9-41dd-aacb-4b53b8c07c20/download/gsp_regions_20250109.zip"
 
@@ -14,8 +16,6 @@ zip_file_url = "https://api.neso.energy/dataset/2810092e-d4b2-472f-b955-d8bea01f
 r = requests.get(zip_file_url)
 z = zipfile.ZipFile(io.BytesIO(r.content))
 z.extractall("./temp/neso/")
-
-import geopandas as gpd
 
 shape = gpd.read_file("./temp/neso/Proj_4326/GSP_regions_4326_20250109.geojson")
 shape["centroid"] = shape.geometry.centroid
@@ -27,9 +27,6 @@ data = shape[["GSPs", "latitude", "longitude"]]
 data.to_csv("pvliveconsumer/data/uk_gsp_locations.csv", index=True)
 
 # load gsp id and gsps from
-import pandas as pd
-from pvlive_api import PVLive
-
 pvlive = PVLive(domain_url="api.pvlive.uk")
 gsp_list = pvlive.gsp_list
 gsp_list.set_index("gsp_name", inplace=True)
