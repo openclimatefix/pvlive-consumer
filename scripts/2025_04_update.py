@@ -5,7 +5,7 @@ from pvlive_api import PVLive
 
 pvlive = PVLive(domain_url="api.pvlive.uk")
 gsp_ids = pvlive.gsp_ids
-gsp_list = pvlive.gsp_list[::-1]
+gsp_list = pvlive.gsp_list
 
 # pvlive.latest(entity_type="gsp", entity_id=320)
 
