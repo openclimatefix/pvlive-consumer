@@ -90,4 +90,3 @@ def make_night_time_zeros(
     )
 
     return gsp_yield_df
-
