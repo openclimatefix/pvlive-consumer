@@ -41,6 +41,7 @@ sentry_sdk.set_tag("app_name", "GSP_consumer")
 sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
 pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
+# ignore these gsp ids from PVLive as they are no longer used
 ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 
 
