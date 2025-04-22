@@ -41,45 +41,52 @@ def make_night_time_zeros(
     if regime != "in-day":
         return gsp_yield_df
 
-    gsp_location = gsp_locations.loc[gsp.gsp_id]
-    longitude = gsp_location["longitude"]
-    latitude = gsp_location["latitude"]
+    if gsp.gsp_id in gsp_locations.index:
+        gsp_location = gsp_locations.loc[gsp.gsp_id]
+        longitude = gsp_location["longitude"]
+        latitude = gsp_location["latitude"]
 
-    # round start up to the nearest half hour
-    start = start.replace(microsecond=0)
-    if start.minute == 0 and start.second == 0:
-        pass
-    elif start.minute < 30 or (start.minute == 30 and start.second == 0):
-        start = start.replace(minute=30, second=0, microsecond=0)
+        # round start up to the nearest half hour
+        start = start.replace(microsecond=0)
+        if start.minute == 0 and start.second == 0:
+            pass
+        elif start.minute < 30 or (start.minute == 30 and start.second == 0):
+            start = start.replace(minute=30, second=0, microsecond=0)
+        else:
+            start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+
+        times = pd.date_range(start=start, end=end, freq="30min")
+        # check if it is nighttime, and if so, set generation values to zero
+        solpos = pvlib.solarposition.get_solarposition(
+            time=times, longitude=longitude, latitude=latitude, method="nrel_numpy"
+        )
+        elevation = solpos["elevation"]
+
+        # only keep nighttime values
+        elevation = elevation[elevation < elevation_limit]
+
+        # last capacity is
+        if gsp.last_gsp_yield is not None:
+            last_capacity = gsp.last_gsp_yield.capacity_mwp
+            last_pvlive_updated_utc = gsp.last_gsp_yield.pvlive_updated_utc
+        else:
+            last_capacity = 0
+            last_pvlive_updated_utc = start
+
+        gsp_yield_df = pd.DataFrame(
+            {
+                "generation_mw": 0,
+                "datetime_gmt": elevation.index,
+                "installedcapacity_mwp": last_capacity,
+                "capacity_mwp": last_capacity,
+                "updated_gmt": last_pvlive_updated_utc,
+            }
+        )
+
+        return gsp_yield_df
     else:
-        start = start.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
-
-    times = pd.date_range(start=start, end=end, freq="30min")
-    # check if it is nighttime, and if so, set generation values to zero
-    solpos = pvlib.solarposition.get_solarposition(
-        time=times, longitude=longitude, latitude=latitude, method="nrel_numpy"
-    )
-    elevation = solpos["elevation"]
-
-    # only keep nighttime values
-    elevation = elevation[elevation < elevation_limit]
-
-    # last capacity is
-    if gsp.last_gsp_yield is not None:
-        last_capacity = gsp.last_gsp_yield.capacity_mwp
-        last_pvlive_updated_utc = gsp.last_gsp_yield.pvlive_updated_utc
-    else:
-        last_capacity = 0
-        last_pvlive_updated_utc = start
-
-    gsp_yield_df = pd.DataFrame(
-        {
-            "generation_mw": 0,
-            "datetime_gmt": elevation.index,
-            "installedcapacity_mwp": last_capacity,
-            "capacity_mwp": last_capacity,
-            "updated_gmt": last_pvlive_updated_utc,
-        }
-    )
-
-    return gsp_yield_df
+        logger.warning(
+            f"Could not find gsp {gsp.gsp_id} in the gsp locations file, "
+            f"this should not happen, please check the file"
+        )
+        return gsp_yield_df
