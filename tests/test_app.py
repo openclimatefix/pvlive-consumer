@@ -74,7 +74,7 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
     runner = CliRunner()
-    n_gsps = 5
+    n_gsps = 4
     response = runner.invoke(
         app, ["--db-url", db_connection.url, "--n-gsps", n_gsps, "--regime", "day-after"]
     )
@@ -118,7 +118,7 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
             "--db-url",
             db_connection.url,
             "--n-gsps",
-            5,
+            4,
             "--regime",
             "day-after",
             "--include-national",
@@ -130,12 +130,12 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 5
+        assert len(gsps) == 4
 
         gsp_yields = session.query(GSPYieldSQL).all()
         for gsp in gsp_yields:
             print(gsp.__dict__)
-        assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
+        assert len(gsp_yields) == 4 * 49  # 5 gsps with 48 half hour settlement periods + midnight
 
 
 @freeze_time("2025-04-21 12:00:00")
@@ -158,7 +158,7 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
             "--db-url",
             db_connection.url,
             "--n-gsps",
-            5,
+            4,
             "--regime",
             "day-after",
             "--include-national",
@@ -170,7 +170,7 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
     with db_connection.get_session() as session:
         gsps = session.query(LocationSQL).all()
         _ = Location.from_orm(gsps[0])
-        assert len(gsps) == 6
+        assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 6 * 49  # 5 gsps with 48 half hour settlement periods + midnight
+        assert len(gsp_yields) == 5 * 49  # 4 gsps with 48 half hour settlement periods + midnight

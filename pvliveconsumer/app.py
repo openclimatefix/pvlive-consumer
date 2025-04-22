@@ -41,6 +41,7 @@ sentry_sdk.set_tag("app_name", "GSP_consumer")
 sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
 pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
+ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157,163, 225, 310]
 
 
 @click.command()
@@ -171,6 +172,10 @@ def pull_data_and_save(
 
     all_gsps_yields_sql = []
     for gsp in gsps:
+        
+        if gsp.gsp_id in ignore_gsp_ids:
+            continue
+
         gsp_yield_df: pd.DataFrame = pvlive.between(
             start=start,
             end=end,
