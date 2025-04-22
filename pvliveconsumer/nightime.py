@@ -15,7 +15,7 @@ elevation_limit = os.getenv("ELEVATION_LIMIT", 5)
 
 # get lat and longs of the gsps
 dir = os.path.dirname(__file__)
-gsp_locations_file = os.path.join(dir, "data/uk_gsp_locations.csv")
+gsp_locations_file = os.path.join(dir, "data/uk_gsp_locations_20250109.csv")
 gsp_locations = pd.read_csv(gsp_locations_file)
 gsp_locations = gsp_locations.set_index("gsp_id")
 
