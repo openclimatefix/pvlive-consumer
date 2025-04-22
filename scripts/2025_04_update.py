@@ -15,14 +15,12 @@ connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 with connection.get_session() as session:
     for i, gsp_detail in gsp_list.iterrows():
-
         gsp_id = int(gsp_detail.gsp_id)
         print(gsp_id)
 
         if gsp_id == 0:
             pass
         else:
-
             location = get_location(session=session, gsp_id=gsp_id)
             location.gsp_name = gsp_detail.gsp_name
 
