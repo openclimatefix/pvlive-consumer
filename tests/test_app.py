@@ -69,7 +69,7 @@ def test_app(db_connection, input_data_last_updated_sql):
         assert len(gsp_yields) >= 11
 
 
-@freeze_time("2024-09-16 12:00:00")
+@freeze_time("2025-04-21 12:00:00")
 def test_app_day_after(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
@@ -90,7 +90,7 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
         # 8 half hour settlement periods + midnight
 
 
-@freeze_time("2024-09-16 12:00:00")
+@freeze_time("2025-04-21 12:00:00")
 def test_app_day_after_national_only(db_connection, input_data_last_updated_sql):
     make_national(db_connection)
 
@@ -109,7 +109,7 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
         assert len(gsp_yields) == 1 * 49  # 1 gsps with 48 half hour settlement periods + midnight
 
 
-@freeze_time("2024-09-16 12:00:00")
+@freeze_time("2025-04-21 12:00:00")
 def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
     runner = CliRunner()
     response = runner.invoke(
@@ -138,7 +138,7 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         assert len(gsp_yields) == 5 * 49  # 5 gsps with 48 half hour settlement periods + midnight
 
 
-@freeze_time("2024-09-16 12:00:00")
+@freeze_time("2025-04-21 12:00:00")
 def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_updated_sql):
     """
     First just get National, then get all gsps
