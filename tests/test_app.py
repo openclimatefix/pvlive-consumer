@@ -135,7 +135,7 @@ def test_app_day_after_gsp_only(db_connection, input_data_last_updated_sql):
         gsp_yields = session.query(GSPYieldSQL).all()
         for gsp in gsp_yields:
             print(gsp.__dict__)
-        assert len(gsp_yields) == 4 * 49  # 5 gsps with 48 half hour settlement periods + midnight
+        assert len(gsp_yields) == 4 * 49  # 4 gsps with 48 half hour settlement periods + midnight
 
 
 @freeze_time("2025-04-21 12:00:00")
@@ -173,4 +173,5 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
         assert len(gsps) == 5
 
         gsp_yields = session.query(GSPYieldSQL).all()
-        assert len(gsp_yields) == 5 * 49  # 4 gsps with 48 half hour settlement periods + midnight
+        assert len(gsp_yields) == 5 * 49
+        # national + 4 gsps with 48 half hour settlement periods + midnight

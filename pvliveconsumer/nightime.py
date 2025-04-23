@@ -41,13 +41,6 @@ def make_night_time_zeros(
     if regime != "in-day":
         return gsp_yield_df
 
-    if gsp.gsp_id not in gsp_locations.index:
-        logger.warning(
-            f"Could not find gsp {gsp.gsp_id} in the gsp locations file, "
-            f"this should not happen, please check the file"
-        )
-        return gsp_yield_df
-
     gsp_location = gsp_locations.loc[gsp.gsp_id]
     longitude = gsp_location["longitude"]
     latitude = gsp_location["latitude"]
