@@ -41,6 +41,8 @@ sentry_sdk.set_tag("app_name", "GSP_consumer")
 sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
 pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
+# ignore these gsp ids from PVLive as they are no longer used
+ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 
 
 @click.command()
@@ -83,7 +85,7 @@ pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
 def app(
     db_url: str,
     regime: str = "in-day",
-    n_gsps: int = 317,
+    n_gsps: int = 342,
     include_national: bool = True,
     uk_london_time_hour: Optional[int] = None,
 ):
@@ -171,6 +173,9 @@ def pull_data_and_save(
 
     all_gsps_yields_sql = []
     for gsp in gsps:
+        if gsp.gsp_id in ignore_gsp_ids:
+            continue
+
         gsp_yield_df: pd.DataFrame = pvlive.between(
             start=start,
             end=end,
