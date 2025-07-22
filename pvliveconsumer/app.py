@@ -9,8 +9,8 @@
 import logging
 import os
 from datetime import datetime, timedelta, timezone
-from typing import List, Optional
 from pathlib import Path
+from typing import List, Optional
 
 import click
 import numpy as np
@@ -45,10 +45,12 @@ sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
 ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 
+
 @click.group()
 def cli():
     """PVLive Consumer CLI"""
     pass
+
 
 @cli.command()
 @click.option(
@@ -158,11 +160,11 @@ def app(
 def extract_historical(start, end, output, gsp_ids, db_url):
     """Extract historical GSP data to Zarr format"""
     from pvliveconsumer.scripts.extract_historical_gsp import HistoricalGSPExtractor
-    
+
     # Convert dates to UTC
     start_utc = start.replace(tzinfo=pytz.UTC)
     end_utc = end.replace(tzinfo=pytz.UTC)
-    
+
     # Parse GSP IDs if provided
     gsp_id_list = None
     if gsp_ids:
@@ -173,16 +175,13 @@ def extract_historical(start, end, output, gsp_ids, db_url):
         with connection.get_session() as session:
             gsps = get_gsps(session=session, n_gsps=342, include_national=True)
             gsp_id_list = [gsp.gsp_id for gsp in gsps]
-    
+
     # Extract data
     extractor = HistoricalGSPExtractor()
     extractor.extract_gsp_data(
-        start=start_utc,
-        end=end_utc,
-        output_path=Path(output),
-        gsp_ids=gsp_id_list
+        start=start_utc, end=end_utc, output_path=Path(output), gsp_ids=gsp_id_list
     )
-    
+
     click.echo(f"✅ Historical data extracted to {output}")
 
 
