@@ -10,10 +10,12 @@ import logging
 import os
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional
+from pathlib import Path
 
 import click
 import numpy as np
 import pandas as pd
+import pytz
 import sentry_sdk
 from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
@@ -41,11 +43,14 @@ sentry_sdk.set_tag("app_name", "GSP_consumer")
 sentry_sdk.set_tag("version", pvliveconsumer.__version__)
 
 pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
-# ignore these gsp ids from PVLive as they are no longer used
 ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 
+@click.group()
+def cli():
+    """PVLive Consumer CLI"""
+    pass
 
-@click.command()
+@cli.command()
 @click.option(
     "--db-url",
     default=None,
@@ -78,7 +83,7 @@ ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
     "--uk-london-time-hour",
     default=None,
     envvar="UK_LONDON_HOUR",
-    help="Optionl to only run code if UK time hour matches code this value. "
+    help="Optional to only run code if UK time hour matches code this value. "
     "This is to solve clock change issues when running with cron in UTC.",
     type=click.INT,
 )
@@ -96,7 +101,7 @@ def app(
     :param regime: if its "in-day" or "day-after"
     :param n_gsps: How many gsps of data to pull
     :param include_national: optional if to get national data or not
-    :param uk_london_time_hour: Optionl to only run code if UK time hour matches code this value.
+    :param uk_london_time_hour: Optional to only run code if UK time hour matches code this value.
         This is to solve clock change issues when running with cron in UTC.
     """
 
@@ -137,6 +142,51 @@ def app(
         pull_data_and_save(gsps=gsps, session=session, regime=regime)
 
 
+# ADD NEW COMMAND HERE
+@cli.command("extract-historical")
+@click.option("--start", type=click.DateTime(), required=True, help="Start date (YYYY-MM-DD)")
+@click.option("--end", type=click.DateTime(), required=True, help="End date (YYYY-MM-DD)")
+@click.option("--output", type=click.Path(), required=True, help="Output zarr file path")
+@click.option("--gsp-ids", default=None, help="Comma-separated GSP IDs (default: all)")
+@click.option(
+    "--db-url",
+    default=None,
+    envvar="DB_URL",
+    help="Database URL to get GSP list from",
+    type=click.STRING,
+)
+def extract_historical(start, end, output, gsp_ids, db_url):
+    """Extract historical GSP data to Zarr format"""
+    from pvliveconsumer.scripts.extract_historical_gsp import HistoricalGSPExtractor
+    
+    # Convert dates to UTC
+    start_utc = start.replace(tzinfo=pytz.UTC)
+    end_utc = end.replace(tzinfo=pytz.UTC)
+    
+    # Parse GSP IDs if provided
+    gsp_id_list = None
+    if gsp_ids:
+        gsp_id_list = [int(x.strip()) for x in gsp_ids.split(",")]
+    elif db_url:
+        # Get GSP IDs from database
+        connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=False)
+        with connection.get_session() as session:
+            gsps = get_gsps(session=session, n_gsps=342, include_national=True)
+            gsp_id_list = [gsp.gsp_id for gsp in gsps]
+    
+    # Extract data
+    extractor = HistoricalGSPExtractor()
+    extractor.extract_gsp_data(
+        start=start_utc,
+        end=end_utc,
+        output_path=Path(output),
+        gsp_ids=gsp_id_list
+    )
+    
+    click.echo(f"✅ Historical data extracted to {output}")
+
+
+# Keep all existing functions unchanged
 def pull_data_and_save(
     gsps: List[LocationSQL],
     session: Session,
@@ -297,4 +347,4 @@ def save_to_database(session: Session, gsp_yields: List[GSPYieldSQL]):
 
 
 if __name__ == "__main__":
-    app()
+    cli()  # Changed from app() to cli()
