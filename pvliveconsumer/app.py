@@ -158,7 +158,7 @@ def pull_data_and_save(
         datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
 
     if regime == "in-day":
-        backfill_hours = os.getenv("BACKFILL_HOURS", 2)
+        backfill_hours = int(os.getenv("BACKFILL_HOURS", 2))
         start = datetime_utc - timedelta(hours=backfill_hours)
         end = datetime_utc + timedelta(minutes=30)
     else:
