@@ -33,6 +33,10 @@ RUN apt-get update && apt-get install -y git
 # Copy required elements of the builder image
 COPY --from=build-app /app/.venv /app/.venv
 COPY --from=build-app /usr/bin/git /usr/bin/git
+COPY --from=build-deps /usr/local/bin/uv /app/.venv/bin/uv
+
+# Copy pyproject.toml for uv commands
+COPY --from=build-app /app/pyproject.toml /app/pyproject.toml
 
 # This is just a check to make sure it works
 ENV PATH="/app/.venv/bin:${PATH}"
