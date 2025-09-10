@@ -1,4 +1,4 @@
-""" Add zeros to nightime """
+"""Add zeros to nightime"""
 import logging
 import os
 from datetime import datetime, timedelta
@@ -27,8 +27,7 @@ def make_night_time_zeros(
     gsp_yield_df: pd.DataFrame,
     regime: str,
 ):
-    """
-    Set generation to zero if it is night time
+    """Set generation to zero if it is night time
 
     :param start: The start datetimes we are looking for
     :param end: The end datetimes we are looking for
@@ -37,7 +36,6 @@ def make_night_time_zeros(
     :param regime:
     :return:
     """
-
     if regime != "in-day":
         return gsp_yield_df
 
@@ -57,7 +55,7 @@ def make_night_time_zeros(
     times = pd.date_range(start=start, end=end, freq="30min")
     # check if it is nighttime, and if so, set generation values to zero
     solpos = pvlib.solarposition.get_solarposition(
-        time=times, longitude=longitude, latitude=latitude, method="nrel_numpy"
+        time=times, longitude=longitude, latitude=latitude, method="nrel_numpy",
     )
     elevation = solpos["elevation"]
 
@@ -79,7 +77,7 @@ def make_night_time_zeros(
             "installedcapacity_mwp": last_capacity,
             "capacity_mwp": last_capacity,
             "updated_gmt": last_pvlive_updated_utc,
-        }
+        },
     )
 
     return gsp_yield_df

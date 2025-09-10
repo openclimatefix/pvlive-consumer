@@ -1,5 +1,4 @@
-"""
-Update database with gsp region
+"""Update database with gsp region
 
 1. load csv file
 2. update database

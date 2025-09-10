@@ -1,4 +1,4 @@
-""" Update installed capacity in database
+"""Update installed capacity in database
 
 We now do this in the app, so we dont need to run this anymore
 """
@@ -45,7 +45,7 @@ installed_capacity = pd.read_csv(f"{dir}/{file}")
 # add national
 total_installed_capacity_mw = installed_capacity["dc_capacity_MWp"].sum()
 national = pd.DataFrame(
-    columns=["GSPs", "dc_capacity_MWp"], data=[["NATIONAL", total_installed_capacity_mw]]
+    columns=["GSPs", "dc_capacity_MWp"], data=[["NATIONAL", total_installed_capacity_mw]],
 )
 installed_capacity = pd.concat([national, installed_capacity])
 installed_capacity.reset_index(inplace=True, drop=True)

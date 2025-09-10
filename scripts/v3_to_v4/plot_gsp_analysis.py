@@ -1,5 +1,4 @@
-"""
-Analysis the amount that each GSP overlaps with others
+"""Analysis the amount that each GSP overlaps with others
 
 Plots
 1. See how many installed capacity overlaps by a GSP over lap threshold
@@ -8,7 +7,7 @@ Plots
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import geopandas as gpd
 import pandas as pd
@@ -34,7 +33,7 @@ v3_gdf = v3_gdf.to_crs(4326)
 v4_gdf = v4_gdf.to_crs(4326)
 
 print("getting installed capacity ...")
-installed_capacity = get_installed_capacity(start=datetime(2022, 7, 1, tzinfo=timezone.utc))
+installed_capacity = get_installed_capacity(start=datetime(2022, 7, 1, tzinfo=UTC))
 print("getting installed capacity: done")
 
 # getting metadata from eso and joining with installed capacity (v3)
@@ -80,7 +79,7 @@ for i in range(333):
 
 
 data_df = pd.DataFrame(
-    data=save, columns=["region_id", "overlap_per", "gsp_name", "installedcapacity_mwp"]
+    data=save, columns=["region_id", "overlap_per", "gsp_name", "installedcapacity_mwp"],
 )
 data_df.sort_values("overlap_per", ascending=False, inplace=True)
 data_df["installedcapacity_mwp_cumsum"] = (

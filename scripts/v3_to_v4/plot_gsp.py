@@ -1,5 +1,4 @@
-"""
-Plot each gsp
+"""Plot each gsp
 
 Idea is to plot each new GSP with the old ones overlapping
 """
@@ -60,7 +59,7 @@ for i in range(333):
     # make trace
     fig = go.Figure(data=[trace_1, trace_2])
     fig.update_layout(
-        mapbox_style="carto-positron", mapbox_zoom=4, mapbox_center={"lat": 55, "lon": 0}
+        mapbox_style="carto-positron", mapbox_zoom=4, mapbox_center={"lat": 55, "lon": 0},
     )
     # fig.show(renderer='browser')
 

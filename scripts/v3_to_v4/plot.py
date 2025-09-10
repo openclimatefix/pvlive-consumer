@@ -1,5 +1,4 @@
-"""
-Plot the UK map with both old and new regions, to see how they overlap
+"""Plot the UK map with both old and new regions, to see how they overlap
 """
 
 import json

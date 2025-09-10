@@ -1,4 +1,4 @@
-""" Application for getting live GSP data
+"""Application for getting live GSP data
 
 1. Load GSP ids from database
 2. For each site, find the most recent data in a database
@@ -8,8 +8,8 @@
 
 import logging
 import os
-from datetime import datetime, timedelta, timezone
-from typing import List, Optional
+from datetime import UTC, datetime, timedelta
+from typing import Optional
 
 import click
 import numpy as np
@@ -34,7 +34,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN"), environment=os.getenv("ENVIRONMENT", "local"), traces_sample_rate=1
+    dsn=os.getenv("SENTRY_DSN"), environment=os.getenv("ENVIRONMENT", "local"), traces_sample_rate=1,
 )
 
 sentry_sdk.set_tag("app_name", "GSP_consumer")
@@ -87,10 +87,9 @@ def app(
     regime: str = "in-day",
     n_gsps: int = 342,
     include_national: bool = True,
-    uk_london_time_hour: Optional[int] = None,
+    uk_london_time_hour: int | None = None,
 ):
-    """
-    Run GSP consumer app, this collect GSP live data and save it to a database.
+    """Run GSP consumer app, this collect GSP live data and save it to a database.
 
     :param db_url: the Database url to save the PV system data
     :param regime: if its "in-day" or "day-after"
@@ -99,7 +98,6 @@ def app(
     :param uk_london_time_hour: Optionl to only run code if UK time hour matches code this value.
         This is to solve clock change issues when running with cron in UTC.
     """
-
     logger.info(f"Running GSP Consumer app ({pvliveconsumer.__version__}) for regime {regime}")
 
     if uk_london_time_hour is not None:
@@ -116,7 +114,7 @@ def app(
         # and get their refresh times (refresh times can also be stored locally)
         logger.debug("Read list of GSP from database")
         gsps = get_gsps(
-            session=session, n_gsps=n_gsps, regime=regime, include_national=include_national
+            session=session, n_gsps=n_gsps, regime=regime, include_national=include_national,
         )
         assert (
             len(gsps) == total_n_gsps
@@ -126,7 +124,7 @@ def app(
         # and filter depending on refresh rate
         logger.debug(
             "Find most recent entered data (for each GSP) in OCF database,"
-            "and filter GSP depending on refresh rate"
+            "and filter GSP depending on refresh rate",
         )
         gsps = filter_gsps_which_have_new_data(gsps=gsps)
         assert (
@@ -138,24 +136,22 @@ def app(
 
 
 def pull_data_and_save(
-    gsps: List[LocationSQL],
+    gsps: list[LocationSQL],
     session: Session,
     datetime_utc: Optional[None] = None,
     regime: str = "in-day",
 ):
-    """
-    Pull the gsp yield data and save to database
+    """Pull the gsp yield data and save to database
 
     :param gsps: list of gsps to save
     :param session: database sessions
     :param provider: provider name
     :param datetime_utc: datetime now, this is optional
     """
-
     pvlive = PVLive(domain_url=pvlive_domain_url)
 
     if datetime_utc is None:
-        datetime_utc = datetime.utcnow().replace(tzinfo=timezone.utc)  # add timezone
+        datetime_utc = datetime.utcnow().replace(tzinfo=UTC)  # add timezone
 
     if regime == "in-day":
         backfill_hours = os.getenv("BACKFILL_HOURS", 2)
@@ -163,10 +159,10 @@ def pull_data_and_save(
         end = datetime_utc + timedelta(minutes=30)
     else:
         start = datetime_utc.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(
-            hours=24
+            hours=24,
         )
         end = datetime_utc.replace(
-            hour=0, minute=0, second=1, microsecond=0
+            hour=0, minute=0, second=1, microsecond=0,
         )  # so we include the last value
 
     logger.info(f"Pulling data for {len(gsps)} GSP for {datetime_utc}")
@@ -192,7 +188,7 @@ def pull_data_and_save(
         if len(gsp_yield_df) == 0:
             logger.warning(
                 f"Did not find any data for {gsp.gsp_id} for {start} to {end}. "
-                f"Will try adding some nighttime zeros"
+                f"Will try adding some nighttime zeros",
             )
 
             gsp_yield_df = make_night_time_zeros(start, end, gsp, gsp_yield_df, regime)
@@ -206,13 +202,13 @@ def pull_data_and_save(
 
             # filter by last
             if gsp.last_gsp_yield is not None:
-                last_gsp_datetime = gsp.last_gsp_yield.datetime_utc.replace(tzinfo=timezone.utc)
+                last_gsp_datetime = gsp.last_gsp_yield.datetime_utc.replace(tzinfo=UTC)
                 gsp_yield_df = gsp_yield_df[gsp_yield_df["datetime_gmt"] > last_gsp_datetime]
 
                 if len(gsp_yield_df) == 0:
                     logger.debug(
                         f"No new data available after {last_gsp_datetime}. "
-                        f"Last data point was {last_gsp_datetime}"
+                        f"Last data point was {last_gsp_datetime}",
                     )
                     continue
             else:
@@ -261,7 +257,7 @@ def pull_data_and_save(
                     else:
                         logger.debug(
                             f"Going to update the capacity from "
-                            f"{current_installed_capacity} to {new_installed_capacity}"
+                            f"{current_installed_capacity} to {new_installed_capacity}",
                         )
                         gsp_yield_sql.location.installed_capacity_mw = new_installed_capacity
 
@@ -276,16 +272,15 @@ def pull_data_and_save(
 
     # 5. check gsps data is avaialble
     extra_gsp_yields = make_gsp_yields_from_national(
-        session=session, start=start, end=end, regime=regime, locations=gsps
+        session=session, start=start, end=end, regime=regime, locations=gsps,
     )
 
     # 6. Save to database - perhaps check no duplicate data. (for each GSP)
     save_to_database(session=session, gsp_yields=extra_gsp_yields + all_gsps_yields_sql)
 
 
-def save_to_database(session: Session, gsp_yields: List[GSPYieldSQL]):
-    """
-    Save GSP yield data to database
+def save_to_database(session: Session, gsp_yields: list[GSPYieldSQL]):
+    """Save GSP yield data to database
 
     :param session: database session
     :param gsp_yields: list of gsp data

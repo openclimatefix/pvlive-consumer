@@ -1,11 +1,11 @@
-from click.testing import CliRunner
 from datetime import datetime, timedelta
+
+from click.testing import CliRunner
+from freezegun import freeze_time
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, Location, LocationSQL
 from nowcasting_datamodel.models.models import national_gb_label
 
 from pvliveconsumer.app import app, pull_data_and_save
-
-from freezegun import freeze_time
 
 
 def make_national(db_connection):
@@ -76,7 +76,7 @@ def test_app_day_after(db_connection, input_data_last_updated_sql):
     runner = CliRunner()
     n_gsps = 4
     response = runner.invoke(
-        app, ["--db-url", db_connection.url, "--n-gsps", n_gsps, "--regime", "day-after"]
+        app, ["--db-url", db_connection.url, "--n-gsps", n_gsps, "--regime", "day-after"],
     )
     assert response.exit_code == 0, response.exception
 
@@ -96,7 +96,7 @@ def test_app_day_after_national_only(db_connection, input_data_last_updated_sql)
 
     runner = CliRunner()
     response = runner.invoke(
-        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"]
+        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"],
     )
     assert response.exit_code == 0, response.exception
 
@@ -148,7 +148,7 @@ def test_app_day_after_gsp_only_after_national(db_connection, input_data_last_up
 
     runner = CliRunner()
     response = runner.invoke(
-        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"]
+        app, ["--db-url", db_connection.url, "--n-gsps", 0, "--regime", "day-after"],
     )
     assert response.exit_code == 0, response.exception
 

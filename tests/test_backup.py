@@ -1,9 +1,6 @@
-import os
-from datetime import datetime, timezone
-from typing import List
+from datetime import UTC, datetime
 
-from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, Location, LocationSQL
-from nowcasting_datamodel.read.read_gsp import get_latest_gsp_yield
+from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, Location
 
 from pvliveconsumer.backup import get_number_gsp_yields, make_gsp_yields_from_national
 
@@ -43,12 +40,12 @@ def add_gsp_yields(db_session):
 
 
 def test_get_number_gsp_yields_empty(db_session):
-    start = datetime_utc = datetime(2022, 1, 1, 0, 35, tzinfo=timezone.utc)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 35, tzinfo=timezone.utc)
+    start = datetime_utc = datetime(2022, 1, 1, 0, 35, tzinfo=UTC)
+    end = datetime_utc = datetime(2022, 1, 2, 0, 35, tzinfo=UTC)
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
-        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime
+        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime,
     )
     assert n_gsp_yields_sql == 0
 
@@ -57,12 +54,12 @@ def test_get_number_gsp_yields(db_session):
     add_gsp_yields(db_session)
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=timezone.utc)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=timezone.utc)
+    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
-        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime
+        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime,
     )
     assert n_gsp_yields_sql == 3
 
@@ -71,12 +68,12 @@ def test_make_gsp_yields_from_national_not_needed(db_session):
     locations = add_gsp_yields(db_session)
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=timezone.utc)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=timezone.utc)
+    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(
-        session=db_session, start=start, end=end, regime=regime, locations=locations
+        session=db_session, start=start, end=end, regime=regime, locations=locations,
     )
     assert len(gsp_yields) == 0
 
@@ -89,12 +86,12 @@ def test_make_gsp_yields_from_national(db_session):
     ]
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=timezone.utc)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=timezone.utc)
+    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(
-        session=db_session, start=start, end=end, regime=regime, locations=locations
+        session=db_session, start=start, end=end, regime=regime, locations=locations,
     )
     assert len(gsp_yields) == 3
     assert isinstance(gsp_yields[0], GSPYieldSQL)

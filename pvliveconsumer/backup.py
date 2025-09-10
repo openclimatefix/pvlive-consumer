@@ -1,8 +1,7 @@
-""" Create gsp data from nataionl yield"""
+"""Create gsp data from nataionl yield"""
 
 import logging
 from datetime import datetime
-from typing import List, Optional
 
 from nowcasting_datamodel.models.gsp import GSPYieldSQL, LocationSQL
 from nowcasting_datamodel.read.read_gsp import get_gsp_yield
@@ -16,10 +15,9 @@ def get_number_gsp_yields(
     start_datetime_utc: datetime,
     end_datetime_utc: datetime,
     session: Session,
-    regime: Optional[str] = None,
+    regime: str | None = None,
 ) -> int:
-    """
-    Get the numner of gsp yields
+    """Get the numner of gsp yields
 
     :param start_datetime_utc: start time to filter on
     :param end_datetime_utc: end time to filter on
@@ -27,7 +25,6 @@ def get_number_gsp_yields(
     :param regime: regim
     :return: the number of gsp yields in that regime
     """
-
     query = session.query(func.count(GSPYieldSQL.id))
     query = query.join(LocationSQL)
     query = query.where(LocationSQL.id == GSPYieldSQL.location_id)
@@ -47,7 +44,7 @@ def get_number_gsp_yields(
 
     logger.debug(
         f"Found {n_gsp_yields_sql} GSP yields from "
-        f"{start_datetime_utc} to {end_datetime_utc}, not including national"
+        f"{start_datetime_utc} to {end_datetime_utc}, not including national",
     )
 
     return n_gsp_yields_sql
@@ -58,10 +55,9 @@ def make_gsp_yields_from_national(
     start: datetime,
     end: datetime,
     regime: str,
-    locations: List[LocationSQL],
-) -> List[GSPYieldSQL]:
-    """
-    Make gsp yields from national
+    locations: list[LocationSQL],
+) -> list[GSPYieldSQL]:
+    """Make gsp yields from national
 
     :param session:
     :param start:
@@ -69,25 +65,24 @@ def make_gsp_yields_from_national(
     :param locations:
     :return:
     """
-
     logger.info("Make GSP yields from national if needed")
 
     # 1. check number of gsps
     n_gsp_yeilds_sql = get_number_gsp_yields(
-        start_datetime_utc=start, end_datetime_utc=end, session=session
+        start_datetime_utc=start, end_datetime_utc=end, session=session,
     )
     if n_gsp_yeilds_sql > 0:
         logger.debug(
-            "Will not interpolate GSP results as there are already GSP results in the database"
+            "Will not interpolate GSP results as there are already GSP results in the database",
         )
         return []
 
     # 2. load national results for the last hour
     national_gsp_yields = get_gsp_yield(
-        session=session, gsp_ids=[0], start_datetime_utc=start, regime=regime, end_datetime_utc=end
+        session=session, gsp_ids=[0], start_datetime_utc=start, regime=regime, end_datetime_utc=end,
     )
     logger.debug(
-        f"Found {len(national_gsp_yields)} naional yields from {start} to {end} for {regime=}"
+        f"Found {len(national_gsp_yields)} naional yields from {start} to {end} for {regime=}",
     )
 
     # 3. make gsps value from national, scalling by capacity

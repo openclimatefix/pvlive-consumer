@@ -1,5 +1,4 @@
-"""
-Update database with gsp details
+"""Update database with gsp details
 
 1. load locations from database
 2. load installed capacity mw from pv live
@@ -9,7 +8,7 @@ Update database with gsp details
 
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import boto3
 from nowcasting_datamodel.connection import DatabaseConnection
@@ -45,7 +44,7 @@ with connection.get_session() as session:
         # load installed capacity from pv live
         print("Getting information pv live")
         d = pvl.at_time(
-            datetime(2022, 5, 1, tzinfo=timezone.utc),
+            datetime(2022, 5, 1, tzinfo=UTC),
             entity_type="gsp",
             extra_fields="installedcapacity_mwp",
             dataframe=True,
