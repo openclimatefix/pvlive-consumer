@@ -14,7 +14,7 @@ db_url = "TODO"
 connection = DatabaseConnection(url=db_url, base=Base_Forecast, echo=True)
 
 with connection.get_session() as session:
-    for i, gsp_detail in gsp_list.iterrows():
+    for _i, gsp_detail in gsp_list.iterrows():
         gsp_id = int(gsp_detail.gsp_id)
         print(gsp_id)
 

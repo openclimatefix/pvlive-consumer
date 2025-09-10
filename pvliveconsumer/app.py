@@ -1,4 +1,4 @@
-"""Application for getting live GSP data
+"""Application for getting live GSP data.
 
 1. Load GSP ids from database
 2. For each site, find the most recent data in a database
@@ -9,7 +9,6 @@
 import logging
 import os
 from datetime import UTC, datetime, timedelta
-from typing import Optional
 
 import click
 import numpy as np
@@ -143,10 +142,10 @@ def app(
 def pull_data_and_save(
     gsps: list[LocationSQL],
     session: Session,
-    datetime_utc: Optional[None] = None,
+    datetime_utc: None | None = None,
     regime: str = "in-day",
 ):
-    """Pull the gsp yield data and save to database
+    """Pull the gsp yield data and save to database.
 
     :param gsps: list of gsps to save
     :param session: database sessions
@@ -292,7 +291,7 @@ def pull_data_and_save(
 
 
 def save_to_database(session: Session, gsp_yields: list[GSPYieldSQL]):
-    """Save GSP yield data to database
+    """Save GSP yield data to database.
 
     :param session: database session
     :param gsp_yields: list of gsp data

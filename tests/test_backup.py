@@ -40,8 +40,8 @@ def add_gsp_yields(db_session):
 
 
 def test_get_number_gsp_yields_empty(db_session):
-    start = datetime_utc = datetime(2022, 1, 1, 0, 35, tzinfo=UTC)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 35, tzinfo=UTC)
+    start = datetime(2022, 1, 1, 0, 35, tzinfo=UTC)
+    end = datetime(2022, 1, 2, 0, 35, tzinfo=UTC)
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
@@ -57,8 +57,8 @@ def test_get_number_gsp_yields(db_session):
     add_gsp_yields(db_session)
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
+    start = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
@@ -74,8 +74,8 @@ def test_make_gsp_yields_from_national_not_needed(db_session):
     locations = add_gsp_yields(db_session)
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
+    start = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(
@@ -89,15 +89,15 @@ def test_make_gsp_yields_from_national_not_needed(db_session):
 
 
 def test_make_gsp_yields_from_national(db_session):
-    locations = gsps = [
+    locations = [
         Location(gsp_id=1, label="GSP_1", installed_capacity_mw=2).to_orm(),
         Location(gsp_id=2, label="GSP_2", installed_capacity_mw=3).to_orm(),
         Location(gsp_id=3, label="GSP_3", installed_capacity_mw=4).to_orm(),
     ]
     add_national_gsp_yields(db_session)
 
-    start = datetime_utc = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
-    end = datetime_utc = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
+    start = datetime(2022, 1, 1, 0, 0, tzinfo=UTC)
+    end = datetime(2022, 1, 2, 0, 0, tzinfo=UTC)
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(

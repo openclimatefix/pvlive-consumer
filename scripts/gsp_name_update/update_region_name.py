@@ -1,4 +1,4 @@
-"""Update database with gsp region
+"""Update database with gsp region.
 
 1. load csv file
 2. update database
@@ -36,7 +36,7 @@ data_df = pd.read_csv(f"{folder}/gsp_new_ids_and_names-edited.csv")
 with connection.get_session() as session:
     # locations = get_all_locations(session=session)
 
-    for i, row in data_df.iterrows():
+    for _i, row in data_df.iterrows():
         location = get_location(session=session, gsp_id=row.gsp_id_x)
         location.region_name = row.region_name
 

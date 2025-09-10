@@ -1,4 +1,4 @@
-"""Time helper functions"""
+"""Time helper functions."""
 import logging
 from datetime import UTC, datetime
 
@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def check_uk_london_hour(hour: int):
-    """Check that the UK London hour is the same as given value
+    """Check that the UK London hour is the same as given value.
 
     We want to pull the data at 10.30 (local time) for national GSP.
     Becasue we use CRON in UTC, we need to run the code at

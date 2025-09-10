@@ -1,4 +1,4 @@
-"""GSP functions"""
+"""GSP functions."""
 import logging
 from datetime import UTC, datetime, timedelta
 
@@ -16,7 +16,7 @@ def get_gsps(
     regime: str = "in-day",
     include_national: bool = True,
 ) -> list[LocationSQL]:
-    """Get PV systems
+    """Get PV systems.
 
     1. Load from database
     3. add any gsp not in database
@@ -29,7 +29,7 @@ def get_gsps(
     """
     gsp_ids = list(range(1, n_gsps + 1))
     if include_national:
-        gsp_ids = [0] + gsp_ids
+        gsp_ids = [0, *gsp_ids]
     total_n_gsps = len(gsp_ids)
 
     # load all pv systems in database
@@ -92,7 +92,7 @@ def filter_gsps_which_have_new_data(
     gsps: list[LocationSQL],
     datetime_utc: datetime | None = None,
 ):
-    """Filter gsps which have new data available
+    """Filter gsps which have new data available.
 
     This is done by looking at the datestamp of last data pulled,
     add then by looking at the pv system refresh time, we can determine if new data is available

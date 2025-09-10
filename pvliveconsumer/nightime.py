@@ -1,4 +1,4 @@
-"""Add zeros to nightime"""
+"""Add zeros to nightime."""
 import logging
 import os
 from datetime import datetime, timedelta
@@ -27,7 +27,7 @@ def make_night_time_zeros(
     gsp_yield_df: pd.DataFrame,
     regime: str,
 ):
-    """Set generation to zero if it is night time
+    """Set generation to zero if it is night time.
 
     :param start: The start datetimes we are looking for
     :param end: The end datetimes we are looking for

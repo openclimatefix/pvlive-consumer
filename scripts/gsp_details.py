@@ -1,4 +1,4 @@
-"""Update database with gsp details
+"""Update database with gsp details.
 
 1. load locations from database
 2. load installed capacity mw from pv live
@@ -35,7 +35,7 @@ with connection.get_session() as session:
 
     national_location = get_location(session=session, gsp_id=0)
     print(national_location.__dict__)
-    locations = [national_location] + locations
+    locations = [national_location, *locations]
 
     for location in locations:
         gsp_id = location.gsp_id

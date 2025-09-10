@@ -1,4 +1,4 @@
-"""Plot each gsp
+"""Plot each gsp.
 
 Idea is to plot each new GSP with the old ones overlapping
 """
@@ -24,7 +24,7 @@ v4_gdf = v4_gdf.to_crs(4326)
 
 
 def make_trace_from_geopandas(gdf, z):
-    """Make a trace from a geopandas dataframe"""
+    """Make a trace from a geopandas dataframe."""
     z_list = [z] * len(gdf)
 
     gdf = gdf.to_crs(4326)

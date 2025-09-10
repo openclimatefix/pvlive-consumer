@@ -1,4 +1,4 @@
-"""Analysis the amount that each GSP overlaps with others
+"""Analysis the amount that each GSP overlaps with others.
 
 Plots
 1. See how many installed capacity overlaps by a GSP over lap threshold

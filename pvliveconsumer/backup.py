@@ -1,4 +1,4 @@
-"""Create gsp data from nataionl yield"""
+"""Create gsp data from nataionl yield."""
 
 import logging
 from datetime import datetime
@@ -17,7 +17,7 @@ def get_number_gsp_yields(
     session: Session,
     regime: str | None = None,
 ) -> int:
-    """Get the numner of gsp yields
+    """Get the numner of gsp yields.
 
     :param start_datetime_utc: start time to filter on
     :param end_datetime_utc: end time to filter on
@@ -57,7 +57,7 @@ def make_gsp_yields_from_national(
     regime: str,
     locations: list[LocationSQL],
 ) -> list[GSPYieldSQL]:
-    """Make gsp yields from national
+    """Make gsp yields from national.
 
     :param session:
     :param start:
