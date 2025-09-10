@@ -79,7 +79,8 @@ for i in range(333):
 
 
 data_df = pd.DataFrame(
-    data=save, columns=["region_id", "overlap_per", "gsp_name", "installedcapacity_mwp"],
+    data=save,
+    columns=["region_id", "overlap_per", "gsp_name", "installedcapacity_mwp"],
 )
 data_df.sort_values("overlap_per", ascending=False, inplace=True)
 data_df["installedcapacity_mwp_cumsum"] = (

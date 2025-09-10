@@ -55,7 +55,10 @@ def make_night_time_zeros(
     times = pd.date_range(start=start, end=end, freq="30min")
     # check if it is nighttime, and if so, set generation values to zero
     solpos = pvlib.solarposition.get_solarposition(
-        time=times, longitude=longitude, latitude=latitude, method="nrel_numpy",
+        time=times,
+        longitude=longitude,
+        latitude=latitude,
+        method="nrel_numpy",
     )
     elevation = solpos["elevation"]
 

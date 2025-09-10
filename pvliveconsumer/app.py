@@ -34,7 +34,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN"), environment=os.getenv("ENVIRONMENT", "local"), traces_sample_rate=1,
+    dsn=os.getenv("SENTRY_DSN"),
+    environment=os.getenv("ENVIRONMENT", "local"),
+    traces_sample_rate=1,
 )
 
 sentry_sdk.set_tag("app_name", "GSP_consumer")
@@ -114,7 +116,10 @@ def app(
         # and get their refresh times (refresh times can also be stored locally)
         logger.debug("Read list of GSP from database")
         gsps = get_gsps(
-            session=session, n_gsps=n_gsps, regime=regime, include_national=include_national,
+            session=session,
+            n_gsps=n_gsps,
+            regime=regime,
+            include_national=include_national,
         )
         assert (
             len(gsps) == total_n_gsps
@@ -162,7 +167,10 @@ def pull_data_and_save(
             hours=24,
         )
         end = datetime_utc.replace(
-            hour=0, minute=0, second=1, microsecond=0,
+            hour=0,
+            minute=0,
+            second=1,
+            microsecond=0,
         )  # so we include the last value
 
     logger.info(f"Pulling data for {len(gsps)} GSP for {datetime_utc}")
@@ -272,7 +280,11 @@ def pull_data_and_save(
 
     # 5. check gsps data is avaialble
     extra_gsp_yields = make_gsp_yields_from_national(
-        session=session, start=start, end=end, regime=regime, locations=gsps,
+        session=session,
+        start=start,
+        end=end,
+        regime=regime,
+        locations=gsps,
     )
 
     # 6. Save to database - perhaps check no duplicate data. (for each GSP)

@@ -11,7 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 def get_gsps(
-    session: Session, n_gsps: int = 339, regime: str = "in-day", include_national: bool = True,
+    session: Session,
+    n_gsps: int = 339,
+    regime: str = "in-day",
+    include_national: bool = True,
 ) -> list[LocationSQL]:
     """Get PV systems
 
@@ -86,7 +89,8 @@ def get_gsps(
 
 
 def filter_gsps_which_have_new_data(
-    gsps: list[LocationSQL], datetime_utc: datetime | None = None,
+    gsps: list[LocationSQL],
+    datetime_utc: datetime | None = None,
 ):
     """Filter gsps which have new data available
 

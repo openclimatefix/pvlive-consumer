@@ -45,7 +45,8 @@ installed_capacity = pd.read_csv(f"{dir}/{file}")
 # add national
 total_installed_capacity_mw = installed_capacity["dc_capacity_MWp"].sum()
 national = pd.DataFrame(
-    columns=["GSPs", "dc_capacity_MWp"], data=[["NATIONAL", total_installed_capacity_mw]],
+    columns=["GSPs", "dc_capacity_MWp"],
+    data=[["NATIONAL", total_installed_capacity_mw]],
 )
 installed_capacity = pd.concat([national, installed_capacity])
 installed_capacity.reset_index(inplace=True, drop=True)

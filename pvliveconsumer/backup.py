@@ -69,7 +69,9 @@ def make_gsp_yields_from_national(
 
     # 1. check number of gsps
     n_gsp_yeilds_sql = get_number_gsp_yields(
-        start_datetime_utc=start, end_datetime_utc=end, session=session,
+        start_datetime_utc=start,
+        end_datetime_utc=end,
+        session=session,
     )
     if n_gsp_yeilds_sql > 0:
         logger.debug(
@@ -79,7 +81,11 @@ def make_gsp_yields_from_national(
 
     # 2. load national results for the last hour
     national_gsp_yields = get_gsp_yield(
-        session=session, gsp_ids=[0], start_datetime_utc=start, regime=regime, end_datetime_utc=end,
+        session=session,
+        gsp_ids=[0],
+        start_datetime_utc=start,
+        regime=regime,
+        end_datetime_utc=end,
     )
     logger.debug(
         f"Found {len(national_gsp_yields)} naional yields from {start} to {end} for {regime=}",

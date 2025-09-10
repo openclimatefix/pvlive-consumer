@@ -46,7 +46,8 @@ def test_filter_pv_systems_which_have_new_data(db_session):
     # 3 | 1 mins     | False
 
     gsps_keep = filter_gsps_which_have_new_data(
-        gsps=gsps, datetime_utc=datetime(2022, 1, 1, 0, 35, tzinfo=UTC),
+        gsps=gsps,
+        datetime_utc=datetime(2022, 1, 1, 0, 35, tzinfo=UTC),
     )
 
     assert len(gsps_keep) == 1

@@ -45,7 +45,10 @@ def test_get_number_gsp_yields_empty(db_session):
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
-        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime,
+        session=db_session,
+        start_datetime_utc=start,
+        end_datetime_utc=end,
+        regime=regime,
     )
     assert n_gsp_yields_sql == 0
 
@@ -59,7 +62,10 @@ def test_get_number_gsp_yields(db_session):
     regime = "in-day"
 
     n_gsp_yields_sql = get_number_gsp_yields(
-        session=db_session, start_datetime_utc=start, end_datetime_utc=end, regime=regime,
+        session=db_session,
+        start_datetime_utc=start,
+        end_datetime_utc=end,
+        regime=regime,
     )
     assert n_gsp_yields_sql == 3
 
@@ -73,7 +79,11 @@ def test_make_gsp_yields_from_national_not_needed(db_session):
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(
-        session=db_session, start=start, end=end, regime=regime, locations=locations,
+        session=db_session,
+        start=start,
+        end=end,
+        regime=regime,
+        locations=locations,
     )
     assert len(gsp_yields) == 0
 
@@ -91,7 +101,11 @@ def test_make_gsp_yields_from_national(db_session):
     regime = "in-day"
 
     gsp_yields = make_gsp_yields_from_national(
-        session=db_session, start=start, end=end, regime=regime, locations=locations,
+        session=db_session,
+        start=start,
+        end=end,
+        regime=regime,
+        locations=locations,
     )
     assert len(gsp_yields) == 3
     assert isinstance(gsp_yields[0], GSPYieldSQL)

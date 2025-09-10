@@ -40,7 +40,9 @@ def test_make_night_time_zeros_with_last_gsp_yield(db_session):
     end = datetime(2021, 1, 2)
     gsp = get_location(session=db_session, gsp_id=1)
     gsp.last_gsp_yield = GSPYieldSQL(
-        solar_generation_kw=1000, capacity_mwp=1.1, pvlive_updated_utc=start,
+        solar_generation_kw=1000,
+        capacity_mwp=1.1,
+        pvlive_updated_utc=start,
     )
     gsp_yield_df = pd.DataFrame()
     regime = "in-day"
