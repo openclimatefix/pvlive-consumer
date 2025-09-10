@@ -81,7 +81,6 @@ plugins = [
 # * See https://beta.ruff.rs/docs/
 [tool.ruff]
 line-length = 100
-indent-width = 4
 exclude = ["__init__.py"]
 
 [tool.ruff.lint]
