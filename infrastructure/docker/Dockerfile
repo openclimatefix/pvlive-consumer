@@ -41,11 +41,15 @@ COPY --from=build-app /app/pyproject.toml /app/pyproject.toml
 # This is just a check to make sure it works
 ENV PATH="/app/.venv/bin:${PATH}"
 
-# copy test files if needed
+# copy source code and test files if needed
+COPY --from=build-app /app/pvliveconsumer /app/pvliveconsumer
 COPY tests/ /app/tests/
 
 # change to app folder
 WORKDIR /app
+
+# Install the package in editable mode using uv sync (this will install the package based on pyproject.toml)
+RUN /app/.venv/bin/uv sync --no-dev
 
 # For testing, install additional packages using the virtual environment
 RUN if [ "$TESTING" = 1 ]; then /app/.venv/bin/uv add --dev pytest pytest-cov coverage; fi
