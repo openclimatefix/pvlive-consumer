@@ -44,6 +44,13 @@ pvlive_domain_url = os.getenv("PVLIVE_DOMAIN_URL", "api.pvlive.uk")
 # ignore these gsp ids from PVLive as they are no longer used
 ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 
+# These GSPs have been split, as part of PVLive update  20251204
+# To make this backwards compatible, we need to also save values for
+# IVER_1|IVER_6 158,
+# BRLE_1|FLEE_1 41
+# SEAB1|SAFO_1 257
+split_gsp_ids = {41 : [343,344], 158 : [345,346],  257 : [347,348]}
+    
 
 @click.command()
 @click.option(
@@ -173,17 +180,38 @@ def pull_data_and_save(
 
     all_gsps_yields_sql = []
     for gsp in gsps:
+
         if gsp.gsp_id in ignore_gsp_ids:
             continue
 
-        gsp_yield_df: pd.DataFrame = pvlive.between(
-            start=start,
-            end=end,
-            entity_type="gsp",
-            entity_id=gsp.gsp_id,
-            dataframe=True,
-            extra_fields="installedcapacity_mwp,capacity_mwp,updated_gmt",
-        )
+        if gsp.gsp_id in split_gsp_ids:
+            logger.info(f"Summing up GSP ID {gsp.gsp_id} from gsp ids {split_gsp_ids[gsp.gsp_id]} parts")
+            gsp_ids = split_gsp_ids[gsp.gsp_id]
+            gsp_yield_dfs = []
+            for gsp_id in gsp_ids:
+                gsp_yield_df = pvlive.between(
+                    start=start,
+                    end=end,
+                    entity_type="gsp",
+                    entity_id=gsp_id,
+                    dataframe=True,
+                    extra_fields="installedcapacity_mwp,capacity_mwp,updated_gmt",
+                )
+                gsp_yield_dfs.append(gsp_yield_df)
+            gsp_yield_df = pd.concat(gsp_yield_dfs)
+            # sum up all these values
+            gsp_yield_df = gsp_yield_df.groupby("datetime_gmt").sum().reset_index()
+            gsp_yield_df['gsp_id'] = gsp.gsp_id
+
+        else:
+            gsp_yield_df: pd.DataFrame = pvlive.between(
+                start=start,
+                end=end,
+                entity_type="gsp",
+                entity_id=gsp.gsp_id,
+                dataframe=True,
+                extra_fields="installedcapacity_mwp,capacity_mwp,updated_gmt",
+            )
 
         logger.debug(f"Processing GSP ID {gsp.gsp_id} ({gsp.label}), out of {len(gsps)}")
 
