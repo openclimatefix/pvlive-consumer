@@ -50,7 +50,8 @@ ignore_gsp_ids = [5, 17, 53, 75, 139, 140, 143, 157, 163, 225, 310]
 # IVER_1|IVER_6 158,
 # BRLE_1|FLEE_1 41
 # SEAB1|SAFO_1 257
-# Note that once, the platform doesnt need these old gsp ids, then we can put them into the ignore list
+# Note that once, the platform doesnt need these old gsp ids,
+# then we can put them into the ignore list
 split_gsp_ids = {41: [343, 344], 158: [345, 346], 257: [347, 348]}
 
 
