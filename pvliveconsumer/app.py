@@ -19,8 +19,8 @@ from nowcasting_datamodel.connection import DatabaseConnection
 from nowcasting_datamodel.models.base import Base_Forecast
 from nowcasting_datamodel.models.gsp import GSPYield, GSPYieldSQL, LocationSQL
 from pvlive_api import PVLive
-from sqlalchemy.orm import Session
 from pvlive_api.pvlive import PVLiveException
+from sqlalchemy.orm import Session
 
 import pvliveconsumer
 from pvliveconsumer.backup import make_gsp_yields_from_national
@@ -182,7 +182,6 @@ def pull_data_and_save(
 
     all_gsps_yields_sql = []
     for gsp in gsps:
-
         if gsp.gsp_id in ignore_gsp_ids:
             continue
 
@@ -197,7 +196,9 @@ def pull_data_and_save(
             )
         except PVLiveException as e:
             if gsp.gsp_id in split_gsp_ids:
-                logger.info(f"Summing up GSP ID {gsp.gsp_id} from gsp ids {split_gsp_ids[gsp.gsp_id]} parts")
+                logger.info(
+                    f"Summing up GSP ID {gsp.gsp_id} from gsp ids {split_gsp_ids[gsp.gsp_id]} parts"
+                )
                 gsp_ids = split_gsp_ids[gsp.gsp_id]
                 gsp_yield_dfs = []
                 for gsp_id in gsp_ids:
@@ -213,7 +214,7 @@ def pull_data_and_save(
                 gsp_yield_all_df = pd.concat(gsp_yield_dfs)
                 # sum up all these values
                 gsp_yield_df = gsp_yield_all_df.groupby("datetime_gmt").sum().reset_index()
-                gsp_yield_df['gsp_id'] = gsp.gsp_id
+                gsp_yield_df["gsp_id"] = gsp.gsp_id
                 gsp_yield_df["updated_gmt"] = gsp_yield_dfs[0]["updated_gmt"]
             else:
                 raise e
