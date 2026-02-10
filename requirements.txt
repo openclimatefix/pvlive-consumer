@@ -9,3 +9,7 @@ sentry-sdk==2.13.0
 click
 pvlib
 pvlive-api==1.4.0
+xarray>=2023.1.0
+zarr>=2.13.0
+numcodecs>=0.11.0
+pytz>=2023.1
