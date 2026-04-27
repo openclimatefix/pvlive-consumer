@@ -1,7 +1,8 @@
-""" Update installed capacity in database
+"""Update installed capacity in database
 
 We now do this in the app, so we dont need to run this anymore
 """
+
 import json
 import os
 

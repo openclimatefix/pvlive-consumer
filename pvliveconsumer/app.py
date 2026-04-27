@@ -1,4 +1,4 @@
-""" Application for getting live GSP data
+"""Application for getting live GSP data
 
 1. Load GSP ids from database
 2. For each site, find the most recent data in a database

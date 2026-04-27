@@ -1,4 +1,5 @@
-""" Update GSP names in the database."""
+"""Update GSP names in the database."""
+
 from nowcasting_datamodel.connection import Base_Forecast, DatabaseConnection
 from nowcasting_datamodel.read.read import get_location
 from pvlive_api import PVLive
