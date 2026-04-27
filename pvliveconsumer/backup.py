@@ -1,4 +1,4 @@
-""" Create gsp data from nataionl yield"""
+"""Create gsp data from nataionl yield"""
 
 import logging
 from datetime import datetime
